@@ -19,8 +19,8 @@ export const transferSUI = async ({
   recipientAddress,
 }: Args): Promise<SuiTransactionBlockResponse> => {
   const tx = new Transaction();
-  const [coin] = tx.splitCoins(tx.gas, [amount]);
-  tx.transferObjects([coin], recipientAddress);
+  
+  // TODO: Add the commands to the transaction
 
   return suiClient.signAndExecuteTransaction({
     transaction: tx,
