@@ -21,11 +21,11 @@ Ensure you have installed locally:
 4. Run your tests with `npm run test` / `npm run test:watch`
 
 ### Project Structure
-
+```bash
 ts-scaffold/
 ├── src/
 │ ├── tests/ # Jest test cases
-│ │ ├── sample.test.ts
+│ │ ├── *.test.ts # any test case should have a .test.ts suffix
 │ ├── env.ts # Reads & validates .env variables
 │ ├── index.ts # Entry point, run with `npm run dev`
 ├── .env # Environment variables
@@ -34,3 +34,4 @@ ts-scaffold/
 ├── tsconfig.json # TypeScript configuration
 ├── jest.config.ts # Jest configuration
 ├── README.md # Project documentation
+```
