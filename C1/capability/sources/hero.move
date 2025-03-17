@@ -36,6 +36,14 @@ public fun transfer_hero(_: &AdminCap, hero: Hero, to: address) {
     transfer::transfer(hero, to);
 }
 
+public fun new_admin(_: &AdminCap, to: address, ctx: &mut TxContext) {
+    let admin_cap = AdminCap {
+        id: object::new(ctx),
+    };
+
+    transfer::transfer(admin_cap, to);
+}
+
 // ===== TEST ONLY =====
 
 #[test_only]
@@ -43,6 +51,8 @@ use sui::{test_scenario as ts, test_utils::{assert_eq, destroy}};
 
 #[test_only]
 const ADMIN: address = @0xAA;
+#[test_only]
+const ADMIN2: address = @0xBB;
 #[test_only]
 const USER: address = @0xCC;
 
@@ -102,6 +112,28 @@ fun test_admin_can_transfer_hero() {
     assert_eq(ts::has_most_recent_for_address<Hero>(USER), true);
 
     ts.return_to_sender(admin_cap);
+
+    ts.end();
+}
+
+#[test]
+fun test_admin_can_create_more_admins() {
+    let mut ts = ts::begin(ADMIN);
+
+    init(ts.ctx());
+
+    ts.next_tx(ADMIN);
+    let admin_cap = ts.take_from_sender<AdminCap>();
+    new_admin(&admin_cap, ADMIN2, ts.ctx());
+    ts.return_to_sender(admin_cap);
+
+    ts.next_tx(ADMIN2);
+    let admin_cap2 = ts.take_from_sender<AdminCap>();
+    let hero = create_hero(&admin_cap2, b"Hero 1".to_string(), ts.ctx());
+    assert_eq(hero.name, b"Hero 1".to_string());
+    ts.return_to_sender(admin_cap2);
+
+    destroy(hero);
 
     ts.end();
 }
