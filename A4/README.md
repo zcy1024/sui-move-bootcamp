@@ -3,12 +3,13 @@
 ### Create a first simple NFT
 
  - Exploration of sui cli client
- - `sui move build`
- - Create New Client Address tokens
- - Get devnet tokens
+ - Build your smart contract with `sui move build`
+ - Create New Address
+ - Get Devnet tokens from faucet
  - Publish a Smart Contract
  - Explore contract on chain with SuiScan
  - Mint an NFT on chain using SuiScan UI
+ - Check minted NFT and Transaction effects on chain with SuiScan
 
 
 ### Useful Links

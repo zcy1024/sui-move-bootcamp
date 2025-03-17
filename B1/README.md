@@ -12,16 +12,15 @@
     - why it requires destruction?
   - Abilities: key, store
   - Drop ability
-    - Adding stamina u64 field in Hero
+    - Adding stamina `u64` field in `Hero`
     - Adding category object in Hero (drop)
- - Create a Weapon in an Option<T>
+ - Create a Weapon in an `Option<T>`
    - Testing weapon creation
    - Testing with Options. Why we need a drop ability?
   - Object Composition
-    - Transfering a weapon
+    - Transferring a weapon
 
-
-s
+    
 ### Useful Links
 
  - [Move Programming Conventions](https://docs.sui.io/concepts/sui-move-concepts/conventions)
