@@ -24,7 +24,7 @@ Ensure you have installed locally:
 ```bash
 ts-scaffold/
 ├── src/
-│ ├── tests/ # Jest test cases
+│ ├── tests/ # Jest test cases, run with `npm run test`
 │ │ ├── *.test.ts # any test case should have a .test.ts suffix
 │ ├── env.ts # Reads & validates .env variables
 │ ├── index.ts # Entry point, run with `npm run dev`
