@@ -8,9 +8,7 @@ import { SuiTransactionBlockResponse } from "@mysten/sui/client";
 const AMOUNT = 0.01 * Number(MIST_PER_SUI);
 
 describe("Transfer SUI amount", () => {
-  let txResponse: SuiTransactionBlockResponse; // Use a scoped variable instead of `this`
-  let recipientSUIBalanceChange: number;
-  let senderSUIBalanceChange: number;
+  let txResponse: SuiTransactionBlockResponse;
 
   beforeAll(async () => {
     txResponse = await transferSUI({
@@ -19,27 +17,21 @@ describe("Transfer SUI amount", () => {
       recipientAddress: ENV.RECIPIENT_ADDRESS,
     });
     console.log("Executed transaction with txDigest:", txResponse.digest);
-    
-    if (!txResponse.balanceChanges) {
-      throw new Error(
-        "Balance changes not found in the response. Make sure you added the showBalanceChanges option!"
-      );
-    }
+  });
+
+  test("Transaction Status", async () => {
+    expect(txResponse.effects).toBeDefined();
+    expect(txResponse.effects!.status.status).toBe("success");
+  });
+
+  test("SUI Balance Changes", async () => {
+    expect(txResponse.balanceChanges).toBeDefined();
     const balanceChanges = parseBalanceChanges({
-      balanceChanges: txResponse.balanceChanges,
+      balanceChanges: txResponse.balanceChanges!,
       senderAddress: getAddress({ secretKey: ENV.USER_SECRET_KEY }),
       recipientAddress: ENV.RECIPIENT_ADDRESS,
     });
-    recipientSUIBalanceChange = balanceChanges.recipientSUIBalanceChange;
-    senderSUIBalanceChange = balanceChanges.senderSUIBalanceChange;
-  });
-
-  test("Transfer SUI amount", async () => {
-    expect(txResponse.effects?.status.status).toBe("success");
-  });
-
-  test("Parse SUI Balance Changes", async () => {
-    expect(recipientSUIBalanceChange).toBe(AMOUNT);
-    expect(senderSUIBalanceChange).toBeLessThan(-AMOUNT);
+    expect(balanceChanges.recipientSUIBalanceChange).toBe(AMOUNT);
+    expect(balanceChanges.senderSUIBalanceChange).toBeLessThan(-AMOUNT);
   });
 });

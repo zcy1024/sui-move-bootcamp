@@ -1,6 +1,5 @@
 import { SuiTransactionBlockResponse } from "@mysten/sui/client";
 import { Transaction } from "@mysten/sui/transactions";
-import { getAddress } from "./getAddress";
 import { suiClient } from "../suiClient";
 import { getSigner } from "./getSigner";
 
@@ -19,9 +18,7 @@ export const transferSUI = async ({
   senderSecretKey,
   recipientAddress,
 }: Args): Promise<SuiTransactionBlockResponse> => {
-  const senderAddress = getAddress({ secretKey: senderSecretKey });
   const tx = new Transaction();
-  tx.setSender(senderAddress);
   const [coin] = tx.splitCoins(tx.gas, [amount]);
   tx.transferObjects([coin], recipientAddress);
 

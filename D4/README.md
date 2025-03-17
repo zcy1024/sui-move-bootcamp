@@ -18,6 +18,6 @@ npm run test
 ### Instructions
 
 - Notice that both of the tests in the `transferSUI.test.ts` file are failing:
-  - `Transfer SUI amount`: Validates that the status of the transfer transaction is "success".
-  - `Parse SUI Balance Changes`: Parses the balance changes and validate they have changed as expected
+  - `Transaction Status`: Validates that the status of the transfer transaction is "success".
+  - `SUI Balance Changes`: Parses the balance changes and validate they have changed as expected
 - Modify the `src/helpers/transferSUI.ts` and `src/helpers/parseBalanceChanges.ts` functions, so that both of the tests succeed.
