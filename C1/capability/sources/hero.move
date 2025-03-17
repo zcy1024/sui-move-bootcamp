@@ -31,7 +31,7 @@ public fun create_hero(_: &AdminCap, name: String, ctx: &mut TxContext): Hero {
     hero
 }
 
-public fun transfer_hero(_: &AdminCap, hero: Hero, to: address, ctx: &mut TxContext) {
+public fun transfer_hero(_: &AdminCap, hero: Hero, to: address) {
     // transfer the Hero resource to the user
     transfer::transfer(hero, to);
 }
@@ -43,8 +43,6 @@ use sui::{test_scenario as ts, test_utils::{assert_eq, destroy}};
 
 #[test_only]
 const ADMIN: address = @0xAA;
-#[test_only]
-const ADMIN2: address = @0xBB;
 #[test_only]
 const USER: address = @0xCC;
 
@@ -97,7 +95,7 @@ fun test_admin_can_transfer_hero() {
     let admin_cap = ts.take_from_sender<AdminCap>();
 
     let hero = create_hero(&admin_cap, b"Hero 1".to_string(), ts.ctx());
-    transfer_hero(&admin_cap, hero, USER, ts.ctx());
+    transfer_hero(&admin_cap, hero, USER);
 
     ts.next_tx(ADMIN);
 
