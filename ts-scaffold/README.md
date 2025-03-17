@@ -2,7 +2,7 @@
 
 This is a simple Node project with Typescript, that:
 
-- reads and validates the .env variables using [dotenv](https://www.npmjs.com/package/dotenv) and [env-cmd](https://www.npmjs.com/package/env-cmd)
+- reads and validates the .env variables using [dotenv](https://www.npmjs.com/package/dotenv), [env-cmd](https://www.npmjs.com/package/env-cmd) and [zod](https://zod.dev/)
 - runs tests with [Jest](https://jestjs.io/)
 - communicates with the Sui blockchain using [@mysten/sui](https://www.npmjs.com/package/@mysten/sui)
 
@@ -22,7 +22,15 @@ Ensure you have installed locally:
 
 ### Project Structure
 
-- `.env.example`: The scaffold of the env file (you need to create the `.env` file here as well)
-- `src/`:
-  - `env.ts`: Parse the .env variables, validate them with zod, and export them
-  - `tests/`: The Jest tests. Ensure that you keep a `*.test.ts` prefix
+ts-scaffold/
+├── src/
+│ ├── tests/ # Jest test cases
+│ │ ├── sample.test.ts
+│ ├── env.ts # Reads & validates .env variables
+│ ├── index.ts # Entry point, run with `npm run dev`
+├── .env # Environment variables
+├── .env.example # Example env file
+├── package.json # Dependencies and scripts
+├── tsconfig.json # TypeScript configuration
+├── jest.config.ts # Jest configuration
+├── README.md # Project documentation
