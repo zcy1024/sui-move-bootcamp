@@ -5,6 +5,8 @@ dotenv.config();
 
 const envSchema = z.object({
   SUI_NETWORK: z.string(),
+  RECIPIENT_ADDRESS: z.string(),
+  USER_SECRET_KEY: z.string(),
 });
 
 // Parse and validate the environment variables
