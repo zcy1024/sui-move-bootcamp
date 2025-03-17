@@ -29,8 +29,8 @@ test("Dry run transferring 0.01 SUI to the RECIPIENT_ADDRESS", async () => {
   });
 
   // log the gas cost and transaction digest
-  console.log("Gas cost:", effects.gasUsed);
-  console.log("Digest:", effects.transactionDigest);
+  // console.log("Gas cost:", effects.gasUsed);
+  // console.log("Digest:", effects.transactionDigest);
 
   // expect the transaction to be successful and the balance changes to have changed accordingly
   expect(effects.status.status).toBe("success");
