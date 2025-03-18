@@ -21,3 +21,4 @@ npm run test
 - Modify the functions, so that both of the tests succeed:
   - `src/helpers/getHero.ts`: gets a hero object by its Object ID
   - `src/helpers/parseHeroContent.ts`: Parses the content of a hero object in a SuiObjectResponse and maps it to a Hero object.
+  - `src/helpers/getHeroSwordIds.ts`: Parses the Dynamic Object Fields of a Hero object, and keeps the ids of the Swords
