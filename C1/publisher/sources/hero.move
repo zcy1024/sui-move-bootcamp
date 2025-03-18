@@ -4,14 +4,12 @@ module publisher::hero {
 
     const EWrongPublisher: u64 = 1;
 
-    public struct HERO has drop {}
-
     public struct Hero has key {
         id: UID,
         name: String,
     }
 
-    fun init(otw: HERO, ctx: &mut TxContext) {
+    fun init(ctx: &mut TxContext) {
         // create Publisher and transfer it to the publisher wallet
     }
 
@@ -77,26 +75,7 @@ module publisher::hero {
 
     #[test]
     fun test_admin_can_transfer_hero() {
-        let mut ts = ts::begin(ADMIN);
-
-        init(HERO {}, ts.ctx());
-
-        ts.next_tx(ADMIN);
-
-        assert_eq(ts::has_most_recent_for_address<Hero>(USER), false);
-
-        let publisher = ts.take_from_sender<Publisher>();
-
-        let hero = create_hero(&publisher, b"Hero 1".to_string(), ts.ctx());
-        transfer_hero(&publisher, hero, USER);
-
-        ts.next_tx(ADMIN);
-
-        assert_eq(ts::has_most_recent_for_address<Hero>(USER), true);
-
-        ts.return_to_sender(publisher);
-
-        ts.end();
+        // TODO: Implement test
     }
 }
 

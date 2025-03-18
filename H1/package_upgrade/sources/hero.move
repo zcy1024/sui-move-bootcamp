@@ -64,8 +64,30 @@ public fun stamina(self: &Hero): u64 {
     self.stamina
 }
 
+/// Returns the sword the hero has equipped.
+/// Aborts if it does not exists
+public fun sword(self: &Hero): &Sword {
+    dof::borrow(&self.id, b"sword")
+}
+
+/// Returns the shield the hero has equipped.
+/// Aborts if it does not exists
+public fun shield(self: &Hero): &Shield {
+    dof::borrow(&self.id, b"shield")
+}
+
 /// Generic add dynamic object field to the hero.
 fun add_dof<T: key + store>(self: &mut Hero, name: String, value: T) {
     dof::add(&mut self.id, name, value)
+}
+
+#[test_only]
+public fun init_for_testing(ctx: &mut TxContext) {
+    init(HERO(), ctx);
+}
+
+#[test_only]
+public fun uid_mut_for_testing(self: &mut Hero): &mut UID {
+    &mut self.id
 }
 
