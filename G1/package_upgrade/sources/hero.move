@@ -69,3 +69,59 @@ fun add_dof<T: key + store>(self: &mut Hero, name: String, value: T) {
     dof::add(&mut self.id, name, value)
 }
 
+#[test_only]
+use sui::test_scenario;
+
+#[test_only]
+use package_upgrade::{blacksmith, version};
+
+#[test_only]
+const EShouldHaveFailed: u64 = 0x100;
+
+#[test]
+#[expected_failure(abort_code=version::EInvalidPackageVersion)]
+fun hero_mint_should_fail() {
+    let sender = @0x11111;
+    let mut scenario = test_scenario::begin(sender);
+    init(HERO(), scenario.ctx());
+    version::init_for_testing(scenario.ctx());
+
+    scenario.next_tx(sender);
+    let version = scenario.take_shared<Version>();
+    let _hero = mint_hero(&version, scenario.ctx());
+    abort(EShouldHaveFailed)
+}
+
+#[test]
+fun dfs_should_use_custom_keys() {
+    // use sui::{coin::{Self, Coin}, sui::SUI};
+
+    let sender = @0x11111;
+    let mut scenario = test_scenario::begin(sender);
+    let publisher = package::claim(HERO(), scenario.ctx());
+    version::init_for_testing(scenario.ctx());
+
+    scenario.next_tx(sender);
+    let blacksmith = blacksmith::new_blacksmith(&publisher, 100, scenario.ctx());
+    let sword = blacksmith.new_sword(80, scenario.ctx());
+    let attack = sword.attack();
+    assert!(attack == 80);
+
+    let version = scenario.take_shared<Version>();
+
+    // let coin = coin::mint_for_testing<SUI>(5_000_000_000, scenario.ctx());
+    // let mut hero = mint_hero_v2(&version, coin, scenario.ctx());
+    let mut hero = mint_hero(&version, scenario.ctx());
+    hero.equip_sword(&version, sword);
+    assert!(!dof::exists_(&hero.id, b"sword".to_string()));
+    // assert!(dof::exists_(&hero.id, SwordKey()));
+    // assert!(*df::borrow(&hero.id, PowerKey()) == attack);
+
+    transfer::public_transfer(publisher, sender);
+    transfer::public_transfer(blacksmith, sender);
+    transfer::public_transfer(hero, sender);
+    test_scenario::return_shared(version);
+
+    scenario.end();
+}
+

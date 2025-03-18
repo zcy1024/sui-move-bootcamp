@@ -26,17 +26,21 @@ pattern to enable deprecation of functions defined in previous package version.
 
 We want to upgrade our package with the following changes:
 
-1. Instead of using simple `String`s as dynamic field keys, we want to be more
+1. We want to bump our `VERSION` constant and `Version` shared-object `version`
+field to 2.
+2. We want to have `Hero` NFTs be purchasable with a price of 5 SUI in order
+instead of having it minted freely.
+3. Instead of using simple `String`s as dynamic field keys, we want to be more
 type-safe and used new structs for each item type that the hero can equip.
-2. We want to add the `power` property to our `Hero` NFT. The power should be
+4. We want to add the `power` property to our `Hero` NFT. The power should be
 increased every time the hero equips a sword or a shield with the attack or
 defence stat respectively.
-3. We want to bump our `VERSION` constant and `Version` shared-object `version`
-field to 2.
-4. We want to have `Hero` NFTs be purchasable with a price of 5 SUI in order
-instead of having it minted freely.
 
 ### Useful Links
 
 - https://docs.sui.io/concepts/sui-move-concepts/packages/upgrade
-- https://docs.sui.io/concepts/sui-move-concepts/packages/custom-policies
+
+### TODO
+
+- Diagram depicting versioned shared object logic
+- Where to use &version as input?
