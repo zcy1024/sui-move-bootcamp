@@ -7,18 +7,6 @@ import { suiClient } from "../suiClient";
  * Filters the objects and returns the object ids of the swords.
  */
 export const getHeroSwordIds = async (id: string): Promise<string[]> => {
-  const dynamicObjectFields = await suiClient
-    .getDynamicFields({
-      parentId: id,
-    })
-    .then((response) =>
-      response.data.map(({ objectId, objectType }) => ({
-        objectId,
-        objectType,
-      }))
-    );
-  const swords = dynamicObjectFields.filter(
-    ({ objectType }) => objectType === `${ENV.PACKAGE_ID}::blacksmith::Sword`
-  );
-  return swords.map(({ objectId }) => objectId);
+  // TODO: Implement the function
+  return new Promise((resolve) => resolve([] as string[]));
 };

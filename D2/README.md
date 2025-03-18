@@ -8,7 +8,7 @@ This exercise contains a simple Node project using Typescript, that reads the co
 - Run the following commands:
 
 ```
-cd read
+cd get-hero
 npm i
 npm run test
 ```
