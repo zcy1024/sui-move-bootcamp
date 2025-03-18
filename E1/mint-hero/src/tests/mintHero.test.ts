@@ -1,13 +1,13 @@
 import { SuiTransactionBlockResponse } from "@mysten/sui/client";
-import { mintNFT } from "../helpers/mintNFT";
-import { parseCreatedObjectsIds } from "../helpers/parseCreatedObjectsIds";
+import { mintHero } from "../helpers/mintHero";
+import { parseCreatedHeroesIds } from "../helpers/parseCreatedHeroesIds";
 import { ENV } from "../env";
 
-describe("Mint an NFT", () => {
+describe("Mint a Hero NFT", () => {
   let txResponse: SuiTransactionBlockResponse;
 
   beforeAll(async () => {
-    txResponse = await mintNFT();
+    txResponse = await mintHero();
     console.log("Executed transaction with txDigest:", txResponse.digest);
   });
 
@@ -16,11 +16,10 @@ describe("Mint an NFT", () => {
     expect(txResponse.effects!.status.status).toBe("success");
   });
 
-  test("Created Object Ids", () => {
+  test("Created Hero", () => {
     expect(txResponse.objectChanges).toBeDefined();
-    const createdObjectsIds = parseCreatedObjectsIds({
+    const createdObjectsIds = parseCreatedHeroesIds({
       objectChanges: txResponse.objectChanges!,
-      targetType: `${ENV.PACKAGE_ID}::nft:: NFT`,
     });
     expect(createdObjectsIds.length).toBe(1);
   });
