@@ -11,7 +11,7 @@ describe("Mint a Hero NFT", () => {
     console.log("Executed transaction with txDigest:", txResponse.digest);
   });
 
-  test("Transaction Status", async () => {
+  test("Transaction Status", () => {
     expect(txResponse.effects).toBeDefined();
     expect(txResponse.effects!.status.status).toBe("success");
   });
