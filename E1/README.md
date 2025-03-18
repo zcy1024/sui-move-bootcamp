@@ -1,6 +1,6 @@
 ## Sui & Move Bootcamp <> Advanced Programmable Transactions
 
-This exercise contains a simple Node project using Typescript, that executes an advanced transaction block on the Sui blockchain, to mint a custom NFT.
+This exercise contains a simple Node project using Typescript, that executes an advanced transaction block on the Sui blockchain, to mint a Hero NFT and a Sword NFT, and attach the Sword to the Hero as a Dynamic Object Field.
 
 ### Quickstart
 
@@ -15,7 +15,8 @@ npm run test
 
 ### Instructions
 
-- Notice that both of the tests in the `mintHero.test.ts` file are failing:
+- Notice that both of the tests in the `mintHeroWithSword.test.ts` file are failing:
   - `Transaction Status`: Validates that the status of the transfer transaction is "success".
-  - `Created Hero`: Parses the object changes and validates that only 1 Hero NFT is created.
-- Modify the functions `src/helpers/mintHero.ts` and `src/helpers/parseCreatedHeroesIds.ts` functions, so that both of the tests succeed.
+  - `Created Hero And Sword`: Validates that a Hero NFT and a Sword NFT are created.
+  - `Hero is equiped with a Sword`: Validates that our Hero is equiped with a Sword.
+- Modify the functions `src/helpers/mintHeroWithSword.ts` and `src/helpers/parseCreatedObjectsIds.ts` functions, so that both of the tests succeed.
