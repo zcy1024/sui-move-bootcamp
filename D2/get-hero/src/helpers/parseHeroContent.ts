@@ -43,30 +43,6 @@ interface HeroContent {
  * Maps it to a Hero object.
  */
 export const parseHeroContent = (objectResponse: SuiObjectResponse): Hero => {
-  const content = objectResponse.data?.content as unknown as HeroContent;
-  if (!content) {
-    throw new Error("Object content is missing");
-  }
-  const fields = content.fields;
-  const weaponFields = fields.weapon?.fields;
-  const categoryFields = fields.category?.fields;
-  const hero: Hero = {
-    id: (fields.id as { id: string }).id,
-    name: fields.name,
-    stamina: fields.stamina ? parseInt(fields.stamina, 10) : null,
-    category: categoryFields
-      ? {
-          id: categoryFields.id.id,
-          name: categoryFields.name,
-        }
-      : null,
-    weapon: weaponFields
-      ? {
-          id: weaponFields.id.id,
-          name: weaponFields.name,
-          destruction_power: parseInt(weaponFields.destruction_power, 10),
-        }
-      : null,
-  };
-  return hero;
+  // TODO: Implement this function
+  return {} as unknown as Hero;
 };
