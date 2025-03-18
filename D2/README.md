@@ -4,7 +4,7 @@ This exercise contains a simple Node project using Typescript, that reads the co
 
 ### Quickstart
 
-- Create a .env file in the `getHero/` directory, following the structure of the .env.example
+- Create a .env file in the `get-hero/` directory, following the structure of the .env.example
 - Run the following commands:
 
 ```
@@ -18,4 +18,6 @@ npm run test
 - Notice that both of the tests in the `getHero.test.ts` file are failing:
   - `Hero Exists`: Validates that the hero object is found on chain by its Object ID
   - `Parse Hero Content`: Parses the fields of the object and validates they have the expected structure
-- Modify the `src/helpers/getHero.ts` and `src/helpers/parseContent.ts` functions, so that both of the tests succeed.
+- Modify the functions, so that both of the tests succeed:
+  - `src/helpers/getHero.ts`: gets a hero object by its Object ID
+  - `src/helpers/parseHeroContent.ts`: Parses the content of a hero object in a SuiObjectResponse and maps it to a Hero object.
