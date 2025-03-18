@@ -27,7 +27,7 @@ describe("Get Hero", () => {
     expect(hero.health).toBeDefined();
   });
 
-  test("Hero has attached swords", async () => {
+  test("Hero Has Attached Swords", async () => {
     const swordIds = await getHeroSwordIds(objectResponse.data!.objectId);
     expect(swordIds.length).toBeGreaterThan(0);
   });

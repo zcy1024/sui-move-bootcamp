@@ -16,8 +16,9 @@ npm run test
 ### Instructions
 
 - Notice that both of the tests in the `getHero.test.ts` file are failing:
-  - `Hero Exists`: Validates that the hero object is found on chain by its Object ID
-  - `Parse Hero Content`: Parses the fields of the object and validates they have the expected structure
+  - `Hero Exists`: Validates that the Hero object is found on chain by its Object ID
+  - `Hero Content`: Validates the content of the Hero object has the expected structure
+  - `Hero Has Attached Swords`: Validates that the Hero object has a Sword attached to it
 - Modify the functions, so that both of the tests succeed:
   - `src/helpers/getHero.ts`: gets a hero object by its Object ID
   - `src/helpers/parseHeroContent.ts`: Parses the content of a hero object in a SuiObjectResponse and maps it to a Hero object.
