@@ -2,39 +2,15 @@ import { SuiObjectResponse } from "@mysten/sui/client";
 
 export interface Hero {
   id: string;
-  name: string;
-  stamina: number | null;
-  category: {
-    id: string;
-    name: string;
-  } | null;
-  weapon: {
-    id: string;
-    name: string;
-    destruction_power: number;
-  } | null;
+  health: string;
+  stamina: string;
 }
 
 interface HeroContent {
   fields: {
     id: { id: string };
-    name: string;
-    stamina: string | null;
-    weapon: {
-      type: string;
-      fields: {
-        id: { id: string };
-        name: string;
-        destruction_power: string;
-      };
-    } | null;
-    category: {
-      type: string;
-      fields: {
-        id: { id: string };
-        name: string;
-      };
-    } | null;
+    health: string;
+    stamina: string;
   };
 }
 
@@ -43,6 +19,14 @@ interface HeroContent {
  * Maps it to a Hero object.
  */
 export const parseHeroContent = (objectResponse: SuiObjectResponse): Hero => {
-  // TODO: Implement this function
-  return {} as unknown as Hero;
+  const content = objectResponse.data?.content as unknown as HeroContent;
+  if (!content) {
+    throw new Error("Empty hero content");
+  }
+  const hero: Hero = {
+    id: content.fields.id.id,
+    health: content.fields.health,
+    stamina: content.fields.stamina,
+  };
+  return hero;
 };
