@@ -30,5 +30,16 @@ To bootstrap our application, we will be using the CLI tool [@mysten/create-dapp
 2. Allow the users to sign and execute a transaction for minting an NFT:
 
 > 1. Add a `<MintNFTButton />` component with a simple button
-> 2. Use the `useSignAndExecuteTransaction()` function to mint the NFT
-> 3. Add auto-refreshing the owned objects list to see the minted NFT
+> 2. Use the `useSignAndExecuteTransaction()` function to mint the NFT, by making a move call to the function:
+>
+> ```
+> 0x2eb076d9f07929c0db89564dbd2ea8fd08bb2cf8807dc4567c2f464e9cf8823e::hero::mint_hero
+> ```
+>
+> 3. Add a filter in the query of the owned objects list, to fetch only the desired NFT types:
+>
+> ```
+> 0x2eb076d9f07929c0db89564dbd2ea8fd08bb2cf8807dc4567c2f464e9cf8823e::hero::Hero
+> ```
+>
+> 4. Add auto-refreshing the owned objects list to see the minted NFT
