@@ -17,4 +17,4 @@ npm run test
 
 - Notice that the test in the `getHeroes.test.ts` file is failing:
   - `Owned Heroes Number`: Validates that the amount of the owned Heroes is exactly 101.
-- Modify the function `src/helpers/getOwnedHeroes.ts` so that it fetches <b>all</b> of the owned Heroes by the address provided in the .env.
+- Modify the function of the file `src/helpers/getOwnedHeroesIds.ts` so that it fetches <b>all</b> of the owned Heroes by the address provided in the .env.
