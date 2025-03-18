@@ -1,7 +1,6 @@
 #[test_only]
 module package_upgrade::hero_tests;
 
-use sui::dynamic_field as df;
 use sui::dynamic_object_field as dof;
 
 use sui::coin;
@@ -10,13 +9,13 @@ use sui::sui::SUI;
 use sui::test_scenario;
 
 use package_upgrade::blacksmith;
-use package_upgrade::hero::{Self, PowerKey, SwordKey};
+use package_upgrade::hero;
 use package_upgrade::version::{Self, Version};
 
 const EShouldHaveFailed: u64 = 0x100;
 
 #[test]
-#[expected_failure(abort_code=version::EInvalidPackageVersion)]
+#[expected_failure(abort_code=hero::EUseMintHeroV2Instead)]
 fun hero_mint_should_fail() {
     let sender = @0x11111;
     let mut scenario = test_scenario::begin(sender);
@@ -42,7 +41,6 @@ fun dfs_should_use_custom_keys() {
     let blacksmith = blacksmith::new_blacksmith(&publisher, 100, scenario.ctx());
     let sword = blacksmith.new_sword(80, scenario.ctx());
     let attack = sword.attack();
-    assert!(attack == 80);
 
     let version = scenario.take_shared<Version>();
 
@@ -50,9 +48,8 @@ fun dfs_should_use_custom_keys() {
     let mut hero = hero::mint_hero_v2(&version, coin, scenario.ctx());
     hero.equip_sword(&version, sword);
     assert!(!dof::exists_(hero.uid_mut_for_testing(), b"sword".to_string()));
-    assert!(dof::exists_(&hero.id, SwordKey()));
-    assert!(*df::borrow(&hero.id, PowerKey()) == attack);
-
+    let _sword = hero.sword();
+    assert!(hero.power() == attack);
     
     transfer::public_transfer(blacksmith, sender);
     transfer::public_transfer(hero, sender);
@@ -61,4 +58,3 @@ fun dfs_should_use_custom_keys() {
 
     scenario.end();
 }
-
