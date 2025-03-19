@@ -37,7 +37,7 @@ The application will allow creations of Heros and weapons.
   - Create a Hero
   - Create a Weapon
   - Equip a Weapon to a Hero
-  - Get the latest minted Heroes
+  - Get the minted Heroes
 - Create the React app with the following views:
   - Main view with latest created Heroes
   - Create Hero view
