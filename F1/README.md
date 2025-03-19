@@ -1,12 +1,10 @@
-## Sui & Move Bootcamp
-
-### End to End Decentralized Application
+## Sui & Move Bootcamp <> End to End Decentralized Application
 
 This is an Application showcasing the end to end flow of a decentralized application. The application is built using the Sui and Move concepts that were taught until now. 
 
 We are going to keep building on this application as we learn more concepts in the upcoming sessions.
 
-#### Tech Stack
+### Tech Stack
 
 - User Interface (React)
 - Smart Contracts (Move)
