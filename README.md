@@ -2,6 +2,16 @@
 
 ## Folder Structure and Contents
 
+
+Each module includes a hands-on project with code examples demonstrating specific Move and Sui functionalities.
+
+The **main** branch provides a scaffolded project with an unfinished version of the code, allowing learners to implement the missing parts as they progress through the lessons.
+
+For each module X, there is a corresponding X-solution branch that contains the fully completed version of the project source code.
+
+This approach encourages interactive learning, enabling students to experiment, debug, and understand the development process step by step before reviewing the final implementation. 🚀
+
+
 ### Module A: Introduction to Sui
 - [A1: Introduction to Decentralized Ledgers and Smart-Contracts](./A1/)
 - [A2: Description of the Sui ecosystem (Walrus, Enoki, Deepbook)](./A2/)
