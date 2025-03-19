@@ -1,0 +1,127 @@
+module vector_hero::hero;
+
+use std::string::String;
+
+public struct Attribute has store, drop {
+    name: String,
+    level: u64,
+}
+
+public struct Hero has key {
+    id: UID,
+    name: String,
+    attributes: vector<Attribute>,
+}
+
+public fun create_hero_1(name: String, mut attributes: vector<String>, ctx: &mut TxContext): Hero {
+    let mut hero_attributes = vector[];
+    while (!attributes.is_empty()) {
+        let attribute = attributes.pop_back();
+        hero_attributes.push_back(Attribute { name: attribute, level: 1 });
+    };
+
+    let hero = Hero {
+        id: object::new(ctx),
+        name,
+        attributes: hero_attributes,
+    };
+
+    hero
+}
+
+public fun create_hero_2(name: String, attributes: vector<String>, ctx: &mut TxContext): Hero {
+    let hero_attributes = attributes.map!(|attribute| Attribute { name: attribute, level: 1 });
+
+    let hero = Hero {
+        id: object::new(ctx),
+        name,
+        attributes: hero_attributes,
+    };
+
+    hero
+}
+
+public fun create_hero_3(name: String, attributes: vector<Attribute>, ctx: &mut TxContext): Hero {
+    let hero = Hero {
+        id: object::new(ctx),
+        name,
+        attributes,
+    };
+
+    hero
+}
+
+public fun create_attribute(name: String, level: u64): Attribute {
+    Attribute { name, level }
+}
+
+public fun transfer_hero(hero: Hero, to: address) {
+    transfer::transfer(hero, to);
+}
+
+public fun kill_hero(hero: Hero) {
+    let Hero { id, name: _, attributes: _ } = hero;
+    id.delete();
+}
+
+// Test Only
+
+#[test_only]
+use sui::test_utils::{assert_eq, destroy};
+
+#[test]
+public fun test_create_hero_with_while_loop_with_destroy_util() {
+    let attributes = vector[
+        b"fire".to_string(),
+        b"water".to_string(),
+        b"earth".to_string(),
+        b"air".to_string(),
+    ];
+    let hero = create_hero_1(b"Hero 1".to_string(), attributes, &mut tx_context::dummy());
+
+    assert_eq(hero.attributes.length(), 4);
+    assert_eq(hero.attributes.any!(|a| a.name == b"fire".to_string()), true);
+    assert_eq(hero.attributes.any!(|a| a.name == b"water".to_string()), true);
+    assert_eq(hero.attributes.any!(|a| a.name == b"earth".to_string()), true);
+    assert_eq(hero.attributes.any!(|a| a.name == b"air".to_string()), true);
+
+    destroy(hero);
+}
+
+#[test]
+public fun test_create_hero_with_while_loop() {
+    let attributes = vector[
+        b"fire".to_string(),
+        b"water".to_string(),
+        b"earth".to_string(),
+        b"air".to_string(),
+    ];
+    let hero = create_hero_1(b"Hero 1".to_string(), attributes, &mut tx_context::dummy());
+
+    assert_eq(hero.attributes.length(), 4);
+    assert_eq(hero.attributes.any!(|a| a.name == b"fire".to_string()), true);
+    assert_eq(hero.attributes.any!(|a| a.name == b"water".to_string()), true);
+    assert_eq(hero.attributes.any!(|a| a.name == b"earth".to_string()), true);
+    assert_eq(hero.attributes.any!(|a| a.name == b"air".to_string()), true);
+
+    kill_hero(hero);
+}
+
+#[test]
+public fun test_create_hero_with_macro() {
+    let attributes = vector[
+        b"fire".to_string(),
+        b"water".to_string(),
+        b"earth".to_string(),
+        b"air".to_string(),
+    ];
+    let hero = create_hero_2(b"Hero 1".to_string(), attributes, &mut tx_context::dummy());
+
+    assert_eq(hero.attributes.length(), 4);
+    assert_eq(hero.attributes.any!(|a| a.name == b"fire".to_string()), true);
+    assert_eq(hero.attributes.any!(|a| a.name == b"water".to_string()), true);
+    assert_eq(hero.attributes.any!(|a| a.name == b"earth".to_string()), true);
+    assert_eq(hero.attributes.any!(|a| a.name == b"air".to_string()), true);
+
+    kill_hero(hero);
+}
