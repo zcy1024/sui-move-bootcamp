@@ -2,7 +2,10 @@
 
 ### Move abilities, storage and events
 
-- Abilities deep dive
+##### What you will learn in this module:
+
+
+- Deep dive in Move Abilities
 - Storage model
 - Events
 - Shared Objects

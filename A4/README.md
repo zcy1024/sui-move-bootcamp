@@ -2,9 +2,11 @@
 
 ### Create a first simple NFT
 
- - Exploration of sui cli client
+##### What you will learn in this module:
+
+ - How `sui client` cli tool works
  - Build your smart contract with `sui move build`
- - Create New Address
+ - Create New Address with `sui client new-address`
  - Get Devnet tokens from faucet
  - Publish a Smart Contract
  - Explore contract on chain with SuiScan

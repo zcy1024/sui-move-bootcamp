@@ -2,21 +2,23 @@
 
 ### Move Basic Concepts
 
+##### What you will learn in this module:
 
-  - Packages
-  - Modules
+  - Move Packages
+  - Move Modules
   - Move Compiler
-  - Tests
+  - Move Unit Tests
   - Objects, Structs
-  - Test minted name
+  - Create a Hero inside a Move Test
     - why it requires destruction?
-  - Abilities: key, store
-  - Drop ability
-    - Adding stamina `u64` field in `Hero`
-    - Adding category object in Hero (drop)
+  - Move Abilities: key, store
+  - `Drop` ability
+    -Adding fields in `Hero `
+      - Adding stamina `u64` field 
+      - Adding category object (drop)
  - Create a Weapon in an `Option<T>`
    - Testing weapon creation
-   - Testing with Options. Why we need a drop ability?
+   - Testing with Options. Why we need a `drop` ability?
   - Object Composition
     - Transferring a weapon
 
