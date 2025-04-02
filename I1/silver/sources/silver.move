@@ -12,7 +12,7 @@ const DECIMALS: u8 = 9;
 const NAME: vector<u8> = b"Silver";
 const SYMBOL: vector<u8> = b"SILVER";
 const DESCRIPTION: vector<u8> = b"Silver, commonly used by heroes to purchase necessary adventure equipment";
-const ICON_URL: vector<u8> = b"https://aggregator.walrus-testnet.walrus.space/v1/blobs/";
+const ICON_URL: vector<u8> = b"https://aggregator.walrus-testnet.walrus.space/v1/blobs/cWTbHE-yC4z3JLmEYWDXM6uhQ1nxu-R0GOLReRwQcH4";
 
 fun init(otw: SILVER, ctx: &mut TxContext) {
     let (tcap, metadata) = create_silver_currency(otw, ctx);
