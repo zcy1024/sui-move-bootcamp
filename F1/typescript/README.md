@@ -25,3 +25,14 @@ typescript/
 ├── jest.config.ts # Jest configuration
 ├── README.md # Project documentation
 ```
+
+### Instructions
+
+- Notice that all of the tests in the `e2e.test.ts` test file are failing:
+
+  - `Transaction Status`: Validates that the status of the transfer transaction is "success".
+  - `Created Hero`: Validates that a Hero NFT is created.
+  - `Hero is equiped with a Weapon`: Validates that except for the Hero NFT, a Weapon NFT was also created, and that this Weapon NFT is wrapped inside a `Hero` NFT
+  - `Heroes registry`: Validates that the Heroes registry already contains a few registrered Hero IDs
+
+- Modify the functions `mintHeroWithWeapon`, `parseCreatedObjectsIds`, `getWeaponIdOfHero`, `getHeroesRegistry` (a detailed guide for each function can be found in the corresponding file), so that all of the tests succeed
