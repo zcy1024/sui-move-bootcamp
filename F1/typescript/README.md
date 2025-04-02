@@ -5,9 +5,10 @@ This directory contains a simple Node project with Typescript, what will contain
 ### Quickstart
 
 1. Create a `.env` file in the root of the node project, following the structure of the `.env.example`
-2. Install the required npm dependencies with `npm i`
-3. Validate your .env with `npm run dev`
-4. Run your tests with `npm run test` / `npm run test:watch`
+2. `cd typescript`
+3. Install the required npm dependencies with `npm i`
+4. Validate your .env with `npm run dev`
+5. Run your tests with `npm run test` / `npm run test:watch`
 
 ### Project Structure
 

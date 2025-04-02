@@ -41,6 +41,6 @@ The application will allow creations of Heros and weapons.
 - Create the React app with the following views:
   - Main view with latest created Heroes
   - Create Hero view
-  - Integration with Wallet via Dapp-kit
+  - My Heroes view
 
 
