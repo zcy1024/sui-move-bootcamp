@@ -30,7 +30,7 @@ move/
 ### Instructions
 
 - After running `sui move test`, you will notice that all of the tests are failing.
-- We need to fill in the fields of the structs and the bodies of the functions, so that the tests pass.
+- We need to fill in the bodies of the functions, so that the tests pass.
 - After filling in the code, publish the package on testnet with:
 
 ```

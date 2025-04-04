@@ -1,5 +1,4 @@
-import { SuiObjectChange, SuiObjectChangeCreated } from "@mysten/sui/client";
-import { ENV } from "../env";
+import { SuiObjectChange } from "@mysten/sui/client";
 
 interface Args {
   objectChanges: SuiObjectChange[];
@@ -16,19 +15,8 @@ interface Response {
  */
 export const parseCreatedObjectsIds = ({ objectChanges }: Args): Response => {
   // TODO: Implement this function
-  const createdObjects = objectChanges.filter(
-    ({ type }) => type === "created"
-  ) as SuiObjectChangeCreated[];
-  const weaponsIds = createdObjects
-    .filter(
-      ({ objectType }) => objectType === `${ENV.PACKAGE_ID}::hero::Weapon`
-    )
-    .map(({ objectId }) => objectId);
-  const heroesIds = createdObjects
-    .filter(({ objectType }) => objectType === `${ENV.PACKAGE_ID}::hero::Hero`)
-    .map(({ objectId }) => objectId);
   return {
-    weaponsIds,
-    heroesIds,
+    weaponsIds: [],
+    heroesIds: [],
   };
 };
