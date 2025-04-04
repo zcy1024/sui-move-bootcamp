@@ -18,7 +18,7 @@ In an approach similar to the section E2, we will be using the [@mysten/create-d
 4. `pnpm i`
 5. `pnpm run dev`
 
-#### 1st View: Latest Created Heroes
+#### 1st View: Created Heroes
 
 In this view, we will utilise the shared object `HeroRegistry`, which keeps track of all the created Heroes.
 
@@ -28,6 +28,8 @@ In this view, we will utilise the shared object `HeroRegistry`, which keeps trac
 2. Let's display the fields of each Hero NFT:
    - add a call to the `multiGetObjects` RPC method, so that we can fetch the data of each Hero
    - create a simple `HeroCard` component to display these data
+
+You will notice that the latest Heroes are currently displayed in the last positions of the list. Modifying our e2e implementation to display the latest Heroes at first will be implemented in next steps.
 
 #### 2nd View: Create Hero
 
