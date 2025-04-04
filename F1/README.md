@@ -1,12 +1,10 @@
-## Sui & Move Bootcamp
-
-### End to End Decentralized Application
+## Sui & Move Bootcamp <> End to End Decentralized Application
 
 This is an Application showcasing the end to end flow of a decentralized application. The application is built using the Sui and Move concepts that were taught until now. 
 
 We are going to keep building on this application as we learn more concepts in the upcoming sessions.
 
-#### Tech Stack
+### Tech Stack
 
 - User Interface (React)
 - Smart Contracts (Move)
@@ -26,7 +24,7 @@ The application will allow creations of Heros and weapons.
       - Weapon
     - Each weapon has the following properties
       - Name
-      - Destruction Power
+      - Attack
 - As a User, I can see the latest minted Heroes
 - Each created hero is added in a central, shared Hero Registry (Shared Object)
 
@@ -39,10 +37,10 @@ The application will allow creations of Heros and weapons.
   - Create a Hero
   - Create a Weapon
   - Equip a Weapon to a Hero
-  - Get the latest minted Heroes
+  - Get the minted Heroes
 - Create the React app with the following views:
   - Main view with latest created Heroes
   - Create Hero view
-  - Integration with Wallet via Dapp-kit
+  - My Heroes view
 
 
