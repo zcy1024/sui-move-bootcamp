@@ -24,7 +24,7 @@ The application will allow creations of Heros and weapons.
       - Weapon
     - Each weapon has the following properties
       - Name
-      - Destruction Power
+      - Attack
 - As a User, I can see the latest minted Heroes
 - Each created hero is added in a central, shared Hero Registry (Shared Object)
 
