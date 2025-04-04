@@ -1,5 +1,7 @@
 import { useCurrentAccount, useSuiClientQuery } from "@mysten/dapp-kit";
 import { Flex, Heading, Text } from "@radix-ui/themes";
+import { HeroCard } from "./HeroCard";
+import { SuiParsedData } from "@mysten/sui/client";
 
 export function OwnedObjects() {
   const account = useCurrentAccount();
@@ -7,6 +9,13 @@ export function OwnedObjects() {
     "getOwnedObjects",
     {
       owner: account?.address as string,
+      filter: {
+        StructType:
+          "0x639b81953dd3790ceaee2721bb5608517d101ef1911062d48bf0726296251e11::hero::Hero",
+      },
+      options: {
+        showContent: true,
+      },
     },
     {
       enabled: !!account,
@@ -28,15 +37,22 @@ export function OwnedObjects() {
   return (
     <Flex direction="column" my="2">
       {data.data.length === 0 ? (
-        <Text>No objects owned by the connected wallet</Text>
+        <Text>No heroes owned by the connected wallet</Text>
       ) : (
-        <Heading size="4">Objects owned by the connected wallet</Heading>
+        <Heading size="4">Heroes owned by the connected wallet</Heading>
       )}
-      {data.data.map((object) => (
-        <Flex key={object.data?.objectId}>
-          <Text>Object ID: {object.data?.objectId}</Text>
-        </Flex>
-      ))}
+      {data.data.map(({ data }) => {
+        if (!data) return null;
+        return (
+          <HeroCard
+            key={data.objectId}
+            objectId={data.objectId}
+            content={
+              data.content as Extract<SuiParsedData, { dataType: "moveObject" }>
+            }
+          />
+        );
+      })}
     </Flex>
   );
 }

@@ -45,7 +45,10 @@ export const CreateHeroForm = () => {
         onSuccess: async (result) => {
           console.log("executed tx:", result);
           await suiClient.waitForTransaction({ digest: result.digest });
-          queryClient.invalidateQueries({
+          await queryClient.invalidateQueries({
+            queryKey: ["testnet", "getOwnedObjects"],
+          });
+          await queryClient.invalidateQueries({
             queryKey: ["testnet", "getObject"],
           });
         },

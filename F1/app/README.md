@@ -39,3 +39,9 @@ In this view, we will build the code for signing and executing a transaction tha
 4. Refresh the `HeroesList` to display the new Hero in case of successful execution, using `suiClient.waitForTransactioBlock` and `queryClient.invalidateQueries`
 
 #### 3rd View: My Heroes
+
+The template app alreay includes a component that displays the IDs of the owned objects for the conneced wallet. We will modify it to display only the Heroes, re-using the card component we built in the previous exercise.
+
+1. Modify the existing `<OwnedObjects />` component to display only the Hero NFTs
+2. Reuse the `<HeroCard />` component to display the information of each Hero
+3. Modify the `onSuccess` callback of the `CreateHeroForm` to also refresh the `<OwnedObjects />` list
