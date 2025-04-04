@@ -20,6 +20,14 @@ In an approach similar to the section E2, we will be using the [@mysten/create-d
 
 #### 1st View: Latest Created Heroes
 
+In this view, we will utilise the shared object `HeroRegistry`, which keeps track of all the created Heroes.
+1. Let's move on by creating a new React component, called `HeroesList`, that:
+    * reads the contents of the `HeroRegistry` object
+    * renders a link to a sui explorer for each Hero
+2. Let's display the fields of each Hero NFT:
+    * add a call to the `multiGetObjects` RPC method, so that we can fetch the data of each Hero
+    * create a simple `HeroCard` component to display these data
+
 #### 2nd View: Create Hero
 
 #### 3rd View: My Heroes
