@@ -1,3 +1,4 @@
+import { newAdmin } from "../../../../../C1/ts/src/helper/hero";
 import { Transaction, TransactionArgument } from "@mysten/sui/transactions";
 import { suiClient } from "../suiClient";
 import { getSigner } from "./getSigner";
@@ -9,32 +10,29 @@ export const createHero = async (name: string, attributes: any[]) => {
 
   let attributesMap = tx.moveCall({
     target: `0x2::vec_map::empty`,
-    typeArguments: [`0x1::string::String`, "u64"],
+    typeArguments: [`${ENV.PACKAGE_ID}::vecmap_hero::Attribute`, "bool"],
   });
 
   attributes.forEach((attr) => {
+    let attribute = tx.moveCall({
+      target: `${ENV.PACKAGE_ID}::vecmap_hero::create_attribute`,
+      arguments: [tx.pure.string(attr.name), tx.pure.u64(1)],
+    });
+
     tx.moveCall({
       target: `0x2::vec_map::insert`,
-      arguments: [
-        attributesMap,
-        tx.pure.string(attr.name),
-        tx.pure.u64(attr.level),
-      ],
-      typeArguments: [`0x1::string::String`, "u64"],
+      arguments: [attributesMap, attribute, tx.pure.bool(attr.active)],
+      typeArguments: [`${ENV.PACKAGE_ID}::vecmap_hero::Attribute`, "bool"],
     });
   });
 
   const hero = tx.moveCall({
     target: `${ENV.PACKAGE_ID}::vecmap_hero::create_hero`,
-    arguments: [
-      tx.object(ENV.HERO_REGISTRY_ID),
-      tx.pure.string(name),
-      attributesMap,
-    ],
+    arguments: [tx.pure.string(name), attributesMap],
   });
 
   tx.moveCall({
-    target: `${ENV.PACKAGE_ID}::vecmap_hero::transfer_hero`,
+    target: `${process.env.PACKAGE_ID}::vecmap_hero::transfer_hero`,
     arguments: [hero, tx.pure.address(signer.toSuiAddress())],
   });
 

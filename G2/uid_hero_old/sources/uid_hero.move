@@ -91,18 +91,18 @@ public fun fight(_admin_cap: &AdminCap, arena: FightArena) {
 
 public fun upgrade_attributes(hero: &mut Hero) {
     let Hero { id: _, name: _, power: _, wins: _ } = hero;
-    let mut earth: u64 = attribute_opt(&hero.id, AttributeKey::Earth).destroy_or!(0);
-    let mut fire: u64 = attribute_opt(&hero.id, AttributeKey::Fire).destroy_or!(0);
-    let mut water: u64 = attribute_opt(&hero.id, AttributeKey::Water).destroy_or!(0);
-    let mut air: u64 = attribute_opt(&hero.id, AttributeKey::Air).destroy_or!(0);
+    let mut earth: u64 = attribute_opt(&mut hero.id, AttributeKey::Earth).destroy_or!(0);
+    let mut fire: u64 = attribute_opt(&mut hero.id, AttributeKey::Fire).destroy_or!(0);
+    let mut water: u64 = attribute_opt(&mut hero.id, AttributeKey::Water).destroy_or!(0);
+    let mut air: u64 = attribute_opt(&mut hero.id, AttributeKey::Air).destroy_or!(0);
 
     while (hero.wins.length() > 0) {
-        let loser_id = hero.wins.pop_back();
+        let mut loser_id = hero.wins.pop_back();
         
-        let l_earth: u64 = attribute_opt(&loser_id, AttributeKey::Earth).destroy_or!(0);
-        let l_fire: u64 = attribute_opt(&loser_id, AttributeKey::Fire).destroy_or!(0);
-        let l_water: u64 = attribute_opt(&loser_id, AttributeKey::Water).destroy_or!(0);
-        let l_air: u64 = attribute_opt(&loser_id, AttributeKey::Air).destroy_or!(0);
+        let l_earth: u64 = attribute_opt(&mut loser_id, AttributeKey::Earth).destroy_or!(0);
+        let l_fire: u64 = attribute_opt(&mut loser_id, AttributeKey::Fire).destroy_or!(0);
+        let l_water: u64 = attribute_opt(&mut loser_id, AttributeKey::Water).destroy_or!(0);
+        let l_air: u64 = attribute_opt(&mut loser_id, AttributeKey::Air).destroy_or!(0);
 
         loser_id.delete();
 
@@ -130,9 +130,9 @@ public fun upgrade_attributes(hero: &mut Hero) {
     df::add(&mut hero.id, AttributeKey::Air, air);
 }
 
-fun attribute_opt(hero_id: &UID, attribute_opt: AttributeKey): Option<u64> {
+fun attribute_opt(hero_id: &mut UID, attribute_opt: AttributeKey): Option<u64> {
     match (df::exists_(hero_id, attribute_opt)) {
-        true => option::some(*df::borrow(hero_id, attribute_opt)),
+        true => option::some(df::remove(hero_id, attribute_opt)),
         _ => option::none(),
     }
 }
@@ -209,10 +209,10 @@ fun test_end_to_end() {
 
         upgrade_attributes(&mut hero1);
 
-        let earth = attribute_opt(&hero1.id, AttributeKey::Earth).destroy_or!(0);
-        let fire = attribute_opt(&hero1.id, AttributeKey::Fire).destroy_or!(0);
-        let water = attribute_opt(&hero1.id, AttributeKey::Water).destroy_or!(0);
-        let air = attribute_opt(&hero1.id, AttributeKey::Air).destroy_or!(0);
+        let earth = attribute_opt(&mut hero1.id, AttributeKey::Earth).destroy_or!(0);
+        let fire = attribute_opt(&mut hero1.id, AttributeKey::Fire).destroy_or!(0);
+        let water = attribute_opt(&mut hero1.id, AttributeKey::Water).destroy_or!(0);
+        let air = attribute_opt(&mut hero1.id, AttributeKey::Air).destroy_or!(0);
 
         assert_eq(earth, 500);
         assert_eq(fire, 500);

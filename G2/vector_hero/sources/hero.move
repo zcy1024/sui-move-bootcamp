@@ -13,6 +13,14 @@ public struct Hero has key {
     attributes: vector<Attribute>,
 }
 
+
+/// @dev This function is used to create a hero with a vector of attributes.
+/// @dev It uses a while loop to iterate over the attributes vector and convert each attribute name to an attribute object.
+/// @notice It accepts a vector of attribute names and converts them to attributes with a level of 1.
+/// @param name The name of the hero.
+/// @param attributes The attributes names of the hero.
+/// @param ctx The transaction context.
+/// @return The hero.
 public fun create_hero_1(name: String, mut attributes: vector<String>, ctx: &mut TxContext): Hero {
     let mut hero_attributes = vector[];
     while (!attributes.is_empty()) {
@@ -29,6 +37,13 @@ public fun create_hero_1(name: String, mut attributes: vector<String>, ctx: &mut
     hero
 }
 
+/// @dev This function is used to create a hero with a vector of attributes.
+/// @dev It uses the map! macro to iterate over the attributes vector and convert each attribute name to an attribute object.
+/// @notice It accepts a vector of attribute names and converts them to attributes with a level of 1.
+/// @param name The name of the hero.
+/// @param attributes The attributes names of the hero.
+/// @param ctx The transaction context.
+/// @return The hero.
 public fun create_hero_2(name: String, attributes: vector<String>, ctx: &mut TxContext): Hero {
     let hero_attributes = attributes.map!(|attribute| Attribute { name: attribute, level: 1 });
 
@@ -41,6 +56,14 @@ public fun create_hero_2(name: String, attributes: vector<String>, ctx: &mut TxC
     hero
 }
 
+/// @dev This function is used to create a hero with a vector of attributes.
+/// @dev It accepts a vector of attribute objects.
+/// @notice It accepts a vector of attribute objects and assignes them to the hero. This allows for the attributes to be
+///         initialised with arbitrary level values.
+/// @param name The name of the hero.
+/// @param attributes The attributes of the hero.
+/// @param ctx The transaction context.
+/// @return The hero.
 public fun create_hero_3(name: String, attributes: vector<Attribute>, ctx: &mut TxContext): Hero {
     let hero = Hero {
         id: object::new(ctx),
@@ -57,11 +80,6 @@ public fun create_attribute(name: String, level: u64): Attribute {
 
 public fun transfer_hero(hero: Hero, to: address) {
     transfer::transfer(hero, to);
-}
-
-public fun kill_hero(hero: Hero) {
-    let Hero { id, name: _, attributes: _ } = hero;
-    id.delete();
 }
 
 // Test Only
@@ -104,7 +122,7 @@ public fun test_create_hero_with_while_loop() {
     assert_eq(hero.attributes.any!(|a| a.name == b"earth".to_string()), true);
     assert_eq(hero.attributes.any!(|a| a.name == b"air".to_string()), true);
 
-    kill_hero(hero);
+    destroy(hero);
 }
 
 #[test]
@@ -123,5 +141,5 @@ public fun test_create_hero_with_macro() {
     assert_eq(hero.attributes.any!(|a| a.name == b"earth".to_string()), true);
     assert_eq(hero.attributes.any!(|a| a.name == b"air".to_string()), true);
 
-    kill_hero(hero);
+    destroy(hero);
 }

@@ -4,10 +4,10 @@ import { createHero, getHero } from "../helpers/hero";
 describe("Hero", () => {
   it("should create a hero with attributes", async () => {
     const result = await createHero("Hero 1", [
-      { name: "fire", level: 10 },
-      { name: "water", level: 20 },
-      { name: "earth", level: 30 },
-      { name: "air", level: 40 },
+      { name: "fire", active: true },
+      { name: "water", active: true },
+      { name: "earth", active: false },
+      { name: "air", active: false },
     ]);
     expect(result.effects?.status.status).toBe("success");
     expect(result.effects?.created?.length).toBe(1);
@@ -21,20 +21,20 @@ describe("Hero", () => {
     expect(heroData.data?.content?.fields.name).toBe("Hero 1");
     expect(
       // @ts-ignore
-      heroData.data?.content?.fields.attributes.length
+      heroData.data?.content?.fields.attributes.fields.contents.length
     ).toBe(4);
 
     const attributes =
       // @ts-ignore
-      heroData.data?.content?.fields.attributes;
+      heroData.data?.content?.fields.attributes.fields.contents;
     expect(attributes).toBeDefined();
     expect(attributes?.length).toBe(4);
 
     const expectedAttributes = [
-      { name: "fire", value: 10 },
-      { name: "water", value: 20 },
-      { name: "earth", value: 30 },
-      { name: "air", value: 40 },
+      { name: "fire", value: true },
+      { name: "water", value: true },
+      { name: "earth", value: false },
+      { name: "air", value: false },
     ];
 
     expect(attributes).toEqual(
@@ -42,10 +42,16 @@ describe("Hero", () => {
         expectedAttributes.map(({ name, value }) =>
           expect.objectContaining({
             fields: {
-              level: value.toString(),
-              name: name,
+              key: {
+                fields: {
+                  level: "1",
+                  name: name,
+                },
+                type: `${ENV.PACKAGE_ID}::vecmap_hero::Attribute`,
+              },
+              value: value,
             },
-            type: `${ENV.PACKAGE_ID}::vecmap_hero::Attribute`,
+            type: `0x2::vec_map::Entry<${ENV.PACKAGE_ID}::vecmap_hero::Attribute, bool>`,
           })
         )
       )
