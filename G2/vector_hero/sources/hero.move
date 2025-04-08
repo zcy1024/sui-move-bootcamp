@@ -88,25 +88,6 @@ public fun transfer_hero(hero: Hero, to: address) {
 use sui::test_utils::{assert_eq, destroy};
 
 #[test]
-public fun test_create_hero_with_while_loop_with_destroy_util() {
-    let attributes = vector[
-        b"fire".to_string(),
-        b"water".to_string(),
-        b"earth".to_string(),
-        b"air".to_string(),
-    ];
-    let hero = create_hero_1(b"Hero 1".to_string(), attributes, &mut tx_context::dummy());
-
-    assert_eq(hero.attributes.length(), 4);
-    assert_eq(hero.attributes.any!(|a| a.name == b"fire".to_string()), true);
-    assert_eq(hero.attributes.any!(|a| a.name == b"water".to_string()), true);
-    assert_eq(hero.attributes.any!(|a| a.name == b"earth".to_string()), true);
-    assert_eq(hero.attributes.any!(|a| a.name == b"air".to_string()), true);
-
-    destroy(hero);
-}
-
-#[test]
 public fun test_create_hero_with_while_loop() {
     let attributes = vector[
         b"fire".to_string(),
