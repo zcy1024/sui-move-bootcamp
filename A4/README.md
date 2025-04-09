@@ -17,4 +17,4 @@
 ### Useful Links
 
  - [Move Programming Conventions](https://docs.sui.io/concepts/sui-move-concepts/conventions)
- 
+ - [Interacting with Sui - Presentation Slides](https://docs.google.com/presentation/d/1NH87zVecZz8OJHbnsCyAf-s4M5E6qjPQzfm8NVhFzpM/edit#slide=id.g2c22b504ffa_0_974) 
