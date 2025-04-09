@@ -1,26 +1,19 @@
 
 module my_fist_contract::simple_nft {
 
-    // === Imports ===
+    use sui::transfer::{public_transfer};
 
-    // === Constants ===
+    /// An object that contains an arbitrary string
+    public struct Hero has key, store {
+        id: UID,
+    }
 
-    // === Structs ===
-
-    // === Events ===
-
-    // === Method Aliases ===
-
-    // === Public Functions ===
-
-    // === View Functions ===
-
-    // === Admin Functions ===
-
-    // === Package Functions ===
-
-    // === Private Functions ===
-
-    // === Test Functions ===
+    #[lint_allow(self_transfer)]
+    public fun mint( ctx: &mut TxContext) {
+        let object = Hero {
+            id: object::new(ctx)
+        };
+        public_transfer(object, tx_context::sender(ctx));
+    }
 
 }
