@@ -47,7 +47,7 @@ fun create_silver_currency(
     )
 }
 
-public macro fun todo<$T>(): $T {
+macro fun todo<$T>(): $T {
     abort(ETodo)
 }
 
