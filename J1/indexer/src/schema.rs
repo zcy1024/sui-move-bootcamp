@@ -14,10 +14,12 @@ diesel::table! {
         hero_id -> Bytea,
         owner -> Text,
         trx_digest -> Text,
-        gas_fee -> BigInt,
+        gas_fee -> Int8,
         created_at -> Timestamp,
     }
 }
 
-
-diesel::allow_tables_to_appear_in_same_query!(fees_events, heroes,);
+diesel::allow_tables_to_appear_in_same_query!(
+    fees_events,
+    heroes,
+);
