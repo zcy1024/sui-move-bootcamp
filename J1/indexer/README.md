@@ -17,7 +17,8 @@ To run the indexer:
 
 ```sh
 $ RUST_LOG=info cargo run --release -- \
-    --remote-store-url https://checkpoints.testnet.sui.io
+    --remote-store-url https://checkpoints.testnet.sui.io \
+    --first-checkpoint 183081694
 ```
 
 (The indexer defaults to populating the database set-up in the previous code

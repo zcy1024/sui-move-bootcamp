@@ -1,7 +1,6 @@
 use clap::Parser;
 use diesel::QueryDsl;
 use diesel_async::{AsyncConnection, AsyncPgConnection, RunQueryDsl};
-use serde_json;
 use sui_hero_indexer::{
     create_indexer,
     schema::{
@@ -96,16 +95,27 @@ async fn test_end_to_end() {
 
     // Verify fee events
     let fee_events = fees_events_table
-        .select((fees_events::event_type, fees_events::event_data))
+        .select((
+            fees_events::event_type,
+            fees_events::treasury_id,
+            fees_events::amount,
+            fees_events::admin,
+            fees_events::timestamp,
+        ))
         .load::<Fee>(&mut conn)
         .await
         .expect("Failed to get fee events");
     assert_eq!(fee_events.len(), 1);
     assert_eq!(fee_events[0].event_type, "TakeFeesEvent");
     assert_eq!(
-        serde_json::to_string(&fee_events[0].event_data).unwrap(),
-        "{}"
+        fee_events[0].treasury_id,
+        "0xca0dbdcc0e3bc141ca2c42790c25261a2572cb8e70cdcea61ddd0671cf03c0ab"
     );
-
+    assert_eq!(fee_events[0].amount, 100000000);
+    assert_eq!(
+        fee_events[0].admin,
+        "0xadc3a0bb21840f732435f8b649e99df6b29cd27854dfa4b020e3bee07ea09b96"
+    );
+    assert_eq!(fee_events[0].timestamp, 1744303596894);
     indexer_handle.abort();
 }

@@ -3,9 +3,10 @@ use std::sync::Arc;
 use diesel::prelude::*;
 use diesel_async::RunQueryDsl;
 use diesel_migrations::{embed_migrations, EmbeddedMigrations};
-use serde_json::Value;
+use serde::{Deserialize, Serialize};
 use sui_indexer_alt_framework::db::{Connection, Db};
 use sui_indexer_alt_framework::pipeline::{concurrent::Handler, Processor};
+use sui_indexer_alt_framework::types::base_types::SuiAddress;
 use sui_indexer_alt_framework::types::effects::TransactionEffectsAPI;
 use sui_indexer_alt_framework::types::full_checkpoint_content::CheckpointData;
 use sui_indexer_alt_framework::types::storage::WriteKind;
@@ -40,12 +41,22 @@ pub struct StoredHero {
     pub gas_fee: i64,
 }
 
-#[derive(Insertable, Debug, FieldCount, Clone, Queryable)]  
+#[derive(Insertable, Debug, FieldCount, Clone, Queryable)]
 #[diesel(table_name = fees_events)]
 pub struct Fee {
     pub event_type: String,
-    #[diesel(serialize_as = Value)]
-    pub event_data: Value,
+    pub treasury_id: String,
+    pub amount: i64,
+    pub admin: String,
+    pub timestamp: i64,
+}
+
+#[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Clone)]
+struct FeeData {
+    treasury_id: SuiAddress,
+    amount: u64,
+    admin: SuiAddress,
+    timestamp: u64,
 }
 
 pub struct HeroPipeline;
@@ -134,9 +145,15 @@ impl Processor for FeeCollecPipeline {
                         event.package_id.to_string() == PACKAGE_ID
                             && event.type_.name.as_str() == "TakeFeesEvent"
                     })
-                    .map(|event| Fee {
-                        event_type: event.type_.name.to_string(),
-                        event_data: serde_json::to_value(event.contents.clone()).unwrap(),
+                    .map(|event| {
+                        let fee_data = bcs::from_bytes::<FeeData>(&event.contents).unwrap();
+                        Fee {
+                            event_type: event.type_.name.to_string(),
+                            treasury_id: fee_data.treasury_id.to_string(),
+                            amount: fee_data.amount as i64,
+                            admin: fee_data.admin.to_string(),
+                            timestamp: fee_data.timestamp as i64,
+                        }
                     })
             })
             .collect())

@@ -4,7 +4,10 @@ diesel::table! {
     fees_events (id) {
         id -> Int4,
         event_type -> Text,
-        event_data -> Jsonb,
+        treasury_id -> Text,
+        amount -> Int8,
+        admin -> Text,
+        timestamp -> Int8,
         created_at -> Timestamp,
     }
 }

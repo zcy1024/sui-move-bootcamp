@@ -37,7 +37,6 @@ public struct TakeFeesEvent has copy, drop, store {
     amount: u64,
     admin: address,
     timestamp: u64,
-
 }
 
 fun init(ctx: &mut TxContext) {
@@ -81,7 +80,12 @@ public fun mint_hero(
     event::emit(event);
 }
 
-entry fun take_fees(_fee_cap: &FeeCap, treasury: &mut Treasury, clock: &Clock, ctx: &mut TxContext) {
+entry fun take_fees(
+    _fee_cap: &FeeCap,
+    treasury: &mut Treasury,
+    clock: &Clock,
+    ctx: &mut TxContext,
+) {
     let event = TakeFeesEvent {
         treasury_id: treasury.id.uid_to_inner(),
         amount: treasury.balance_fees.value(),
