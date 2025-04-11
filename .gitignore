@@ -14,5 +14,5 @@
 .history
 build
 node_modules
-
+target 
 Move.lock

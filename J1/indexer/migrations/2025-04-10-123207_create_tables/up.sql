@@ -1,0 +1,15 @@
+-- Your SQL goes here
+CREATE TABLE heroes (
+    hero_id BYTEA PRIMARY KEY,
+    owner TEXT NOT NULL,
+    trx_digest TEXT NOT NULL,
+    gas_fee BIGINT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE fees_events (
+    id SERIAL PRIMARY KEY,
+    event_type TEXT NOT NULL,
+    event_data JSONB NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
