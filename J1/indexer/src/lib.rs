@@ -79,35 +79,7 @@ impl Processor for HeroPipeline {
             checkpoint_summary.sequence_number
         );
 
-        Ok(transactions
-            .into_iter()
-            .filter(|tx| {
-                let calls = tx.transaction.data().transaction_data().move_calls();
-                calls.iter().any(|call| {
-                    call.0.to_string() == PACKAGE_ID
-                        && call.1 == MODULE_NAME
-                        && call.2 == FUNCTION_NAME
-                })
-            })
-            .map(|tx| {
-                let hero_id = tx
-                    .effects
-                    .all_changed_objects()
-                    .iter()
-                    .find(|(_, _, kind)| *kind == WriteKind::Create)
-                    .map(|(obj, _, _)| obj.0.to_vec())
-                    .unwrap_or_default();
-                let owner = tx.transaction.sender_address().to_string();
-                let trx_digest = tx.transaction.digest().to_string();
-                let gas_fee = tx.effects.gas_cost_summary().net_gas_usage();
-                return StoredHero {
-                    hero_id,
-                    owner,
-                    trx_digest,
-                    gas_fee,
-                };
-            })
-            .collect())
+        // TODO: Implement
     }
 }
 
@@ -132,31 +104,7 @@ impl Processor for FeeCollecPipeline {
 
     // Example with utilizing events
     fn process(&self, checkpoint: &Arc<CheckpointData>) -> Result<Vec<Self::Value>> {
-        Ok(checkpoint
-            .transactions
-            .iter()
-            .flat_map(|tx| {
-                tx.events
-                    .as_ref()
-                    .map(|events| events.data.iter())
-                    .into_iter()
-                    .flatten()
-                    .filter(|event| {
-                        event.package_id.to_string() == PACKAGE_ID
-                            && event.type_.name.as_str() == "TakeFeesEvent"
-                    })
-                    .map(|event| {
-                        let fee_data = bcs::from_bytes::<FeeData>(&event.contents).unwrap();
-                        Fee {
-                            event_type: event.type_.name.to_string(),
-                            treasury_id: fee_data.treasury_id.to_string(),
-                            amount: fee_data.amount as i64,
-                            admin: fee_data.admin.to_string(),
-                            timestamp: fee_data.timestamp as i64,
-                        }
-                    })
-            })
-            .collect())
+        // TODO: Implement
     }
 }
 
@@ -184,14 +132,7 @@ pub async fn create_indexer(
 ) -> Result<IndexerCluster> {
     let mut indexer = IndexerCluster::new(database_url, cluster_args, Some(&MIGRATIONS)).await?;
 
-    // Add pipelines
-    indexer
-        .concurrent_pipeline(FeeCollecPipeline, ConcurrentConfig::default())
-        .await?;
-
-    indexer
-        .concurrent_pipeline(HeroPipeline, ConcurrentConfig::default())
-        .await?;
+    // TODO: Add pipelines
 
     Ok(indexer)
 }
