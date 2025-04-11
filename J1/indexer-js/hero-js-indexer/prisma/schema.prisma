@@ -1,0 +1,34 @@
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+
+model HeroEvent {
+  dbId String @id @unique @default(uuid())
+  hero_id String
+  hero_name String
+  owner String
+  timestamp String
+}
+
+model TakeFeesEvent {
+  dbId String @id @unique @default(uuid())
+  treasury_id String
+  amount String
+  admin String
+  timestamp String
+}
+
+
+model cursor {
+  id        String @id
+  eventSeq  String
+  txDigest  String
+}
