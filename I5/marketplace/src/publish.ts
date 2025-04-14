@@ -9,15 +9,36 @@ export class PublishSingleton {
     private static instance: PublishSingleton | null = null;
 
     private constructor(
+        private readonly rulesResp: SuiTransactionBlockResponse,
         private readonly publishResp: SuiTransactionBlockResponse,
         private readonly policyResp: SuiTransactionBlockResponse
     ) { }
 
-    public static async publish(client?: SuiClient, signer?: Keypair, packagePath?: string) {
+    public static async publish({ client, signer, packagePath, rulesPath, royalties }: {
+        client?: SuiClient,
+        signer?: Keypair,
+        packagePath?: string,
+        rulesPath?: string,
+        royalties?: {
+            basisPoints: number;
+            minRoyaltiesAmount: string;
+        }
+    }) {
         client ??= new SuiClient({ url: getFullnodeUrl('localnet') });
         signer ??= ADMIN_KEYPAIR;
         packagePath ??= `${__dirname}/../../sword`;
+        rulesPath ??= `${__dirname}/../../kiosk_rules`;
+        royalties ??= {
+            basisPoints: 100, // 1%
+            minRoyaltiesAmount: "10000000", // 0.01 SUI
+        };
         if (!PublishSingleton.instance) {
+            const rulesResp = await publishPackage(client, signer, rulesPath);
+            const rulesPackageId = findPublishedPackage(rulesResp)?.packageId;
+            if (!rulesPackageId) {
+                throw new Error("Expected to find rules package published");
+            }
+
             const publishResp = await publishPackage(client, signer, packagePath);
             const packageId = findPublishedPackage(publishResp)?.packageId;
             if (!packageId) {
@@ -34,9 +55,11 @@ export class PublishSingleton {
                 client,
                 signer,
                 packageId,
-                publisherChng
+                publisherChng,
+                rulesPackageId,
+                royalties,
             });
-            PublishSingleton.instance = new PublishSingleton(publishResp, policyResp);
+            PublishSingleton.instance = new PublishSingleton(rulesResp, publishResp, policyResp);
         }
     }
 
@@ -45,6 +68,18 @@ export class PublishSingleton {
             throw new Error("Use `async PublishSingleton.publish()` first");
         }
         return PublishSingleton.instance;
+    }
+
+    public static rulesResponse(): SuiTransactionBlockResponse {
+        return this.getInstance().rulesResp;
+    }
+
+    public static rulesPackageId(): string {
+        const packageChng = findPublishedPackage(this.rulesResponse());
+        if (!packageChng) {
+            throw new Error("Expected to find package published");
+        }
+        return packageChng.packageId;
     }
 
     public static publishResponse(): SuiTransactionBlockResponse {
@@ -132,18 +167,36 @@ async function createPolicy({ client, signer, packageId, publisherChng }: {
     client: SuiClient,
     signer: Keypair,
     packageId: string,
-    publisherChng: SuiObjectChangeCreated
+    publisherChng: SuiObjectChangeCreated;
+    rulesPackageId: string;
+    royalties: {
+        basisPoints: number;
+        minRoyaltiesAmount: string;
+    }
 }): Promise<SuiTransactionBlockResponse> {
     const transaction = new Transaction();
-    transaction.moveCall({
-        target: `0x2::transfer_policy::default`,
-        arguments: [
-            transaction.objectRef(publisherChng)
-        ],
-        typeArguments: [
-            `${packageId}::sword::Sword`
-        ]
+
+    const [policy, cap] = transaction.moveCall({
+        target: "0x2::transfer_policy::new",
+        arguments: [transaction.objectRef(publisherChng)],
+        typeArguments: [`${packageId}::sword::Sword`],
     });
+
+    // Task: Set transfer policy with:
+    // 1. Personal kiosk rule
+    // 2. Royalty rule
+    // 3. Lock rule
+
+    transaction.transferObjects([cap], signer.toSuiAddress());
+
+    transaction.moveCall({
+        target: "0x2::transfer::public_share_object",
+        arguments: [policy],
+        typeArguments: [
+            `0x2::transfer_policy::TransferPolicy<${packageId}::sword::Sword>`,
+        ],
+    });
+
     const resp = await client.signAndExecuteTransaction({
         transaction,
         signer,

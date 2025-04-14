@@ -13,7 +13,7 @@ type KioskListingFields = {
         type: "0x2::kiosk::Listing";
         fields: {
             id: string;
-            is_exclusive: boolean
+            is_exclusive: boolean;
         };
     },
     value: string;
@@ -21,11 +21,41 @@ type KioskListingFields = {
 type KioskOwnerCapFields = {
     for: string,
     id: {
-        id: string
+        id: string;
+    };
+};
+type PersonalKioskCapFields = {
+    id: {
+        id: string;
+    },
+    cap: { type: '0x2::kiosk::KioskOwnerCap', fields: KioskOwnerCapFields };
+};
+type RoyaltyRuleConfigDFFields = {
+    id: {
+        id: string;
+    };
+    name: {
+        type: `0x2::transfer_policy::RuleKey<${string}::royalty_rule::Rule>`;
+        fields: { dummy_field: false; };
+    };
+    value: {
+        type: `${string}::royalty_rule::Config`;
+        fields: {
+            amount_bp: number;
+            min_amount: string
+        }
     }
-}
-type KioskOwnerCapParsedData = Extract<SuiParsedData, { dataType: 'moveObject' }> & { fields: KioskOwnerCapFields };
+};
 type KioskListingParsedData = Extract<SuiParsedData, { dataType: 'moveObject' }> & { fields: KioskListingFields };
+type KioskOwnerCapParsedData = Extract<SuiParsedData, { dataType: 'moveObject' }> & { fields: KioskOwnerCapFields };
+type PersonalKioskCapParsedData = Extract<SuiParsedData, { dataType: 'moveObject' }> & { fields: PersonalKioskCapFields };
+type RoyaltyRuleConfigDFParsedData = Extract<SuiParsedData, { dataType: 'moveObject' }> & { fields: RoyaltyRuleConfigDFFields };
+
+type KioskData = {
+    id: string;
+    capId: string;
+    isPersonal: boolean;
+};
 
 export async function createKiosk(client: SuiClient, signer: Keypair): Promise<SuiTransactionBlockResponse> {
     const transaction = new Transaction();
@@ -56,6 +86,30 @@ export async function createKiosk(client: SuiClient, signer: Keypair): Promise<S
     return resp;
 }
 
+export async function createPersonalKiosk(client: SuiClient, signer: Keypair): Promise<SuiTransactionBlockResponse> {
+
+    const transaction = new Transaction();
+    const [kiosk, cap] = transaction.moveCall({
+        target: `0x2::kiosk::new`,
+    });
+
+    // Task: Make `kiosk` personal.
+
+    const resp = await client.signAndExecuteTransaction({
+        transaction,
+        signer,
+        options: {
+            showEffects: true,
+            showObjectChanges: true,
+        }
+    });
+    if (resp.effects?.status.status !== 'success') {
+        throw new Error(`Something went wrong creating kiosk:\n${JSON.stringify(resp, null, 2)}`)
+    }
+    await client.waitForTransaction({ digest: resp.digest });
+    return resp;
+}
+
 export async function placeAndListInKiosk({ client, signer, kiosk, swordId, price }: {
     client: SuiClient;
     signer: Keypair;
@@ -69,25 +123,10 @@ export async function placeAndListInKiosk({ client, signer, kiosk, swordId, pric
 
     // Find owned kiosk if not given
     if (!kiosk) {
-        let resp = await client.getOwnedObjects({
-            owner: signer.toSuiAddress(),
-            filter: {
-                StructType: "0x2::kiosk::KioskOwnerCap"
-            },
-            limit: 1,
-            options: {
-                showContent: true,
-            },
-        });
-        const data = resp.data.at(0)?.data;
-        if (!data) {
-            throw new Error(`Could not find a kiosk for ${signer.toSuiAddress()}`);
-        }
-        const content = data.content as KioskOwnerCapParsedData;
-        kiosk = {
-            id: content.fields.for,
-            capId: data.objectId
-        };
+        kiosk = await getKiosk(client, signer.toSuiAddress(), false);
+    }
+    if (!kiosk) {
+        throw new Error(`No kiosk for address ${signer.toSuiAddress()}`);
     }
 
     const transaction = new Transaction();
@@ -118,36 +157,62 @@ export async function placeAndListInKiosk({ client, signer, kiosk, swordId, pric
     return resp;
 }
 
-export async function purchase({ client, signer, fromKioskObjectId, swordId, price }: {
+export async function purchase({ client, signer, fromKioskObjectId, swordId }: {
     client: SuiClient;
     signer: Keypair;
     fromKioskObjectId: string;
     swordId: string;
-    price?: number;
 }): Promise<SuiTransactionBlockResponse> {
-    // In case price is missing, find the kiosk Listing
-    if (!price) {
-        const dfKey = bcs.struct(
-            '0x2::kiosk::Listing',
-            { id: bcs.Address, is_exclusive: bcs.bool() }
-        ).serialize({
-            id: swordId,
-            is_exclusive: false
-        }).toBytes();
-        const dfId = deriveDynamicFieldID(fromKioskObjectId, '0x2::kiosk::Listing', dfKey);
-
-        const dfResp = await client.getObject({
-            id: dfId,
-            options: {
-                showContent: true
-            }
-        });
-        if (!dfResp.data) {
-            throw new Error(`Could not find Listing for item ${swordId} under kiosk ${fromKioskObjectId}`);
-        }
-        const content = dfResp.data.content as KioskListingParsedData;
-        price = parseInt(content.fields.value);
+    // Get the signer Kiosk to lock the sword at
+    const buyerKiosk = await getKiosk(client, signer.toSuiAddress(), true);
+    if (!buyerKiosk) {
+        throw new Error("You need a PersonalKiosk to buy this item");
     }
+    // Find the kiosk Listing
+    const dfKey = bcs.struct(
+        '0x2::kiosk::Listing',
+        { id: bcs.Address, is_exclusive: bcs.bool() }
+    ).serialize({
+        id: swordId,
+        is_exclusive: false
+    }).toBytes();
+    const dfId = deriveDynamicFieldID(fromKioskObjectId, '0x2::kiosk::Listing', dfKey);
+
+    const dfResp = await client.getObject({
+        id: dfId,
+        options: {
+            showContent: true
+        }
+    });
+    if (!dfResp.data) {
+        throw new Error(`Could not find Listing for item ${swordId} under kiosk ${fromKioskObjectId}`);
+    }
+    const content = dfResp.data.content as KioskListingParsedData;
+    const price = parseInt(content.fields.value);
+
+    // Royalties
+    const ruleConfigKeyType = `0x2::transfer_policy::RuleKey<${PublishSingleton.rulesPackageId()}::royalty_rule::Rule>`;
+    const royaltiesConfigKey = bcs.struct(
+        ruleConfigKeyType,
+        { dummy_field: bcs.bool() }
+    ).serialize({ dummy_field: false }).toBytes();
+    const royaltyDfId = deriveDynamicFieldID(PublishSingleton.policyId(), ruleConfigKeyType, royaltiesConfigKey);
+    const royaltyConfigResp = await client.getObject({
+        id: royaltyDfId,
+        options: {
+            showContent: true
+        }
+    });
+    if (!royaltyConfigResp.data) {
+        throw new Error(`Could not find royalty rule config in policy: ${PublishSingleton.policyId()}`);
+    }
+    const royaltyContent = royaltyConfigResp.data.content as RoyaltyRuleConfigDFParsedData;
+    const royalties_ = royaltyContent.fields.value.fields;
+    const royalties = {
+        basisPoints: royalties_.amount_bp,
+        minRoyaltiesAmount: royalties_.min_amount
+    };
+    const royaltiesAmount = Math.max(price * royalties.basisPoints / 10000, parseInt(royalties.minRoyaltiesAmount));
 
     const transaction = new Transaction();
 
@@ -162,8 +227,10 @@ export async function purchase({ client, signer, fromKioskObjectId, swordId, pri
         typeArguments: [`${PublishSingleton.packageId()}::sword::Sword`]
     });
 
-    // Transfer sword to signer
-    transaction.transferObjects([sword], signer.toSuiAddress());
+    // Task: Solve the rules regarding Sword purchases by
+    // 1. Putting the sword in your PersonalKiosk (personal_kiosk_rule)
+    // 2. Locking the sword in there (kiosk_lock_rule)
+    // 3. Paying royalties (royalty_rule)
 
     // Resolve TransferRequest
     transaction.moveCall({
@@ -188,5 +255,31 @@ export async function purchase({ client, signer, fromKioskObjectId, swordId, pri
     }
     await client.waitForTransaction({ digest: resp.digest });
     return resp;
+}
+
+export async function getKiosk(client: SuiClient, owner: string, isPersonal: boolean): Promise<KioskData | undefined> {
+    const StructType = isPersonal ? `${PublishSingleton.rulesPackageId()}::personal_kiosk::PersonalKioskCap` : "0x2::kiosk::KioskOwnerCap";
+
+    let resp = await client.getOwnedObjects({
+        owner,
+        filter: {
+            StructType
+        },
+        limit: 1,
+        options: {
+            showContent: true,
+        },
+    });
+    const data = resp.data.at(0)?.data;
+    if (!data) { return undefined; }
+
+    const content = data.content as PersonalKioskCapParsedData | KioskOwnerCapParsedData;
+    return {
+        id: isPersonal
+            ? (content as PersonalKioskCapParsedData).fields.cap.fields.for
+            : (content as KioskOwnerCapParsedData).fields.for,
+        capId: data.objectId,
+        isPersonal
+    };
 }
 
