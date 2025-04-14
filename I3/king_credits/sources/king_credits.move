@@ -28,7 +28,7 @@ fun init(otw: KING_CREDITS, ctx: &mut TxContext) {
         ctx
     );
 
-    // Create policy, allow transfer with CrownCouncilRule and setup its
+    // Task: Create policy, allow transfer with CrownCouncilRule and setup its
     // config.
     abort(ETodo)
 }
