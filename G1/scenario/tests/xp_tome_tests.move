@@ -16,12 +16,12 @@ fun test_new_xp_tome() {
     let mut scenario = test_scenario::begin(admin);
     acl::init_for_testing(scenario.ctx());
 
-    // Create new `XPTome`
+    // Task: Create new `XPTome`
     {
 
     };
 
-    // Check `XPTome`'s field values
+    // Task: Check `XPTome`'s field values
     {
 
     };

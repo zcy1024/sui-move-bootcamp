@@ -18,7 +18,7 @@ fun test_mint() {
     let mut scenario = test_scenario::begin(admin);
     acl::init_for_testing(scenario.ctx());
 
-    // Mint `Hero`
+    // Task: Mint `Hero`
     {
 
     };
@@ -28,7 +28,7 @@ fun test_mint() {
     assert!(transferred.size() == 1);
     let (hero_id, transferred_to) = transferred.pop();
     assert!(transferred_to == hero_owner);
-    // Check `Hero`'s fields
+    // Task: Check `Hero`'s fields
     {
 
     };
@@ -49,7 +49,7 @@ fun test_level_up() {
     let mut scenario = test_scenario::begin(admin);
     acl::init_for_testing(scenario.ctx());
 
-    // Mint `Hero` and `XPTome`
+    // Task: Mint `Hero` and `XPTome`
     {
 
     };
@@ -57,7 +57,7 @@ fun test_level_up() {
     let mint_effects = scenario.next_tx(hero_owner);
     let transferred = mint_effects.transferred_to_account();
     assert!(transferred.size() == 2);
-    // Apply `XPTome` to `Hero` and check updated stats.
+    // Task: Apply `XPTome` to `Hero` and check updated stats.
     {
 
     };

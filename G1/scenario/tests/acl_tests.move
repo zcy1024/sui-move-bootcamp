@@ -22,13 +22,12 @@ fun test_add_admin() {
     assert!(shared.length() == 1);
     assert!(transferred.size() == 2);
 
-    // Add admin `new_admin`
+    // Task: Add admin `new_admin`
     {
 
     };
 
-    // Authorize admin `new_admin`
-
+    // Task: Authorize admin `new_admin`
     {
 
     };

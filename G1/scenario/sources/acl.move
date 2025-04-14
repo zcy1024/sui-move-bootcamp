@@ -73,3 +73,5 @@ public fun new_admins_for_testing(admin: address): Admins {
     }
 }
 
+// Task: Call init from tests: `init_for_testing`
+
