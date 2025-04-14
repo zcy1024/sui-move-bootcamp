@@ -76,7 +76,7 @@ export async function publishPackage(client: SuiClient, signer: Keypair, package
         dependencies
     });
 
-    // TODO Part 2: Burn upgradeCap
+    // Task: Part 2: Burn upgradeCap
     transaction.transferObjects([upgradeCap], signer.toSuiAddress());
 
     return await client.signAndExecuteTransaction({

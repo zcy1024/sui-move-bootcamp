@@ -24,7 +24,7 @@ public fun add_rule_config<T>(
     initial_members: vector<address>,
     ctx: &mut TxContext,
 ) {
-    // Setup rule config for CrownCouncilRule. It will initialize with `initial_members`.
+    // Task: Setup rule config for CrownCouncilRule. It will initialize with `initial_members`.
     assert!(initial_members.length() <= MAX_CROWN_COUNCIL_MEMBERS, EMaxCouncilMembers);
     todo!()
 }
@@ -34,7 +34,7 @@ public fun add_council_member<T>(
     cap: &TokenPolicyCap<T>,
     member_addr: address,
 ) {
-    // Add `member_addr` as council-member inside rule_config
+    // Task: Add `member_addr` as council-member inside rule_config
     todo!()
 }
 
@@ -43,7 +43,7 @@ public fun remove_council_member<T>(
     cap: &TokenPolicyCap<T>,
     member_addr: address,
 ) {
-    // Add `member_addr` from rule_config
+    // Task: Remove `member_addr` from rule_config
     todo!()
 }
 
@@ -52,7 +52,7 @@ public fun prove<T>(
     policy: &TokenPolicy<T>,
     ctx: &mut TxContext
 ) {
-    // If the action-request sender is a council member add approval for this rule
+    // Task: If the action-request sender is a council member add approval for this rule
     todo!()
 }
 

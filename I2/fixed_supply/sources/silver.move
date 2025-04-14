@@ -26,7 +26,7 @@ fun init(otw: SILVER, ctx: &mut TxContext) {
 
     transfer::public_freeze_object(metadata);
 
-    // TODO Part 1: Mint the total supply, and transfer it to sender.
+    // Task Part 1: Mint the total supply, and transfer it to sender.
     // Lock the treasury cap inside the freezer as DOF so that it is unusable
     // but still easily indexable, and lastly freeze Freezer.
     todo!<()>()
