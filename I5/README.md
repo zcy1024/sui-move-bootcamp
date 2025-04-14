@@ -3,6 +3,14 @@
 In this section we will work with the use of common Kiosk rules that are used to force royalties
 when trading Swords.
 
+## Sword Contract
+
+This project uses the same Sword contract as in [I4]. The contract (`sword.move`) is a simple NFT implementation that creates swords with the following properties:
+- Name
+- Damage value
+- Special effects (as a vector of strings)
+- Display metadata (name, image URL, description)
+
 ## Project Structure
 
 The codebase consists of several key components:
