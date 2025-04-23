@@ -1,8 +1,8 @@
 ## Sui & Move Bootcamp <> Integrating an Indexer in a Dapp
 
-This is an exercise showcasing how we can integrating a custom Sui indexer in a Dapp. We are going to use the `indexer-js` we build in the previous `J1` exercise, and build a simple UI to fetch and display the Hero NFTs that are stored in the DB.
+This is an exercise showcasing how we can integrate a custom Sui indexer in a Dapp. We are going to use the `indexer-js` we built in the previous `J1` exercise, and build a simple UI to fetch and display the Hero NFTs that are stored in the DB.
 
-The app will have a simple view, listing the Object IDs of the Hero NFTs, as they are returned by the REST API of the exercise `J1`.
+The app will have a simple view, listing the Hero NFTs, as they are returned by the REST API of the exercise `J1`.
 
 ### Instructions
 
