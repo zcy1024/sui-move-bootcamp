@@ -3,7 +3,6 @@
 /// This module uses Ed25519 signatures to verify and authorize privileged operations.
 module admin_action::signature;
 
-use std::bcs;
 use sui::{ed25519, hash, package};
 
 /// Error code indicating the first mint attempt failed.
