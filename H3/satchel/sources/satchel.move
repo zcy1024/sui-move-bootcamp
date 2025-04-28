@@ -139,3 +139,36 @@ fun test_satchel_return() {
 
     abort(EExpectedFailure)
 }
+
+#[test]
+#[expected_failure(abort_code=EInvalidReturn)]
+fun test_scroll_swap() {
+
+    let mut ctx = tx_context::dummy();
+
+    let scroll1 = Scroll {
+        id: object::new(&mut ctx),
+        name: b"Scroll of Healing".to_string(),
+        effects: vector[b"Heals 10 HP".to_string()],
+    };
+    let scroll2 = Scroll {
+        id: object::new(&mut ctx),
+        name: b"Scroll of Stamina".to_string(),
+        effects: vector[b"Gives 10 STA".to_string()],
+    };
+    let scroll1_id = object::id(&scroll1);
+    let scroll2_id = object::id(&scroll2);
+
+    let (mut satchel1, cap1) = new(&mut ctx);
+    let (mut satchel2, cap2) = new(&mut ctx);
+    satchel1.add_scroll(&cap1, scroll1);
+    satchel2.add_scroll(&cap2, scroll2);
+
+    let (scroll1, borrow1) = satchel1.borrow_scroll(scroll1_id);
+    let (scroll2, borrow2) = satchel2.borrow_scroll(scroll2_id);
+
+    satchel1.return_scroll(scroll2, borrow1);
+    satchel2.return_scroll(scroll1, borrow2);
+
+    abort(EExpectedFailure)
+}
