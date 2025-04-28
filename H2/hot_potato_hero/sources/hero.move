@@ -18,7 +18,7 @@ public struct LevelBonusRule {}
 public struct LevelReachedRule {}
 
 public struct LevelUpRequest {
-    rules: VecMap<TypeName, u8>,
+    // TODO: add a property to store the rules
 }
 
 public struct LevelUpgradePolicy has key {
@@ -38,20 +38,7 @@ public struct Hero has key {
 }
 
 fun init(ctx: &mut TxContext) {
-    let policy = LevelUpgradePolicy {
-        id: object::new(ctx),
-        rules: vec_set::from_keys(vector[
-            type_name::get<PaymentRule>(),
-            type_name::get<WhitelistedRule>(),
-            type_name::get<LevelBonusRule>(),
-            type_name::get<LevelReachedRule>(),
-        ]),
-        min_weight: 2,
-        payment_fee: 1 * PAYMENT_FEE_BASE,
-        whitelist_registry: vec_set::empty(),
-        treasury: balance::zero(),
-    };
-    transfer::share_object(policy);
+    // TODO: Initialize the policy
 }
 
 public fun mint_hero(name: String, ctx: &mut TxContext): Hero {
@@ -64,7 +51,7 @@ public fun mint_hero(name: String, ctx: &mut TxContext): Hero {
 }
 
 public fun level_up_request(): LevelUpRequest {
-    LevelUpRequest { rules: vec_map::empty() }
+    // TODO: Initialize the request
 }
 
 public fun collect_payment_proof(
@@ -73,7 +60,7 @@ public fun collect_payment_proof(
     coin: Coin<SUI>,
 ) {
     if (coin.value() >= policy.payment_fee) {
-        request.rules.insert(type_name::get<PaymentRule>(), 1);
+        // TODO: add the payment rule to the request
     };
     policy.treasury.join(coin.into_balance());
 }
@@ -84,42 +71,24 @@ public fun collect_whitelist_proof(
     ctx: &TxContext,
 ) {
     if (policy.whitelist_registry.contains(&ctx.sender())) {
-        request.rules.insert(type_name::get<WhitelistedRule>(), 1);
+        // TODO: add the whitelist rule to the request
     }
 }
 
 public fun collect_level_bonus_proof(request: &mut LevelUpRequest, hero: &Hero) {
     if (hero.level_points > 90) {
-        request.rules.insert(type_name::get<LevelBonusRule>(), 1);
+        // TODO: add the level bonus rule to the request
     }
 }
 
 public fun collect_level_reached_proof(request: &mut LevelUpRequest, hero: &Hero) {
     if (hero.level_points >= 100) {
-        request.rules.insert(type_name::get<LevelReachedRule>(), 2);
+        // TODO: add the level reached rule to the request
     }
 }
 
 public fun confirm_level_up(request: LevelUpRequest, policy: &LevelUpgradePolicy, hero: &mut Hero) {
-    let LevelUpRequest { rules } = request;
-    let request_proofs_length = rules.size();
-    let mut i = 0;
-    let mut weight: u8 = 0;
-
-    while (i < request_proofs_length) {
-        let (rule, w) = rules.get_entry_by_idx(i);
-        if (policy.rules.contains(rule)) {
-            weight = weight + *w;
-        };
-        i = i + 1;
-    };
-
-    if (weight < policy.min_weight) {
-        abort EInsufficientWeight
-    };
-
-    hero.level = hero.level + 1;
-    hero.level_points = 0;
+    // TODO: confirm the level up request
 }
 
 // Test Only

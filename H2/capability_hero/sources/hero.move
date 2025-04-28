@@ -21,15 +21,9 @@ public fun mint_hero(name: String, ctx: &mut TxContext): Hero {
     }
 }
 
-public fun buy_weapon(hero: &mut Hero, store: &mut HeroStore<Weapon>, coin: Coin<SUI>) {
-    let weapon = store.buy_item<Weapon>(coin);
-    hero.weapon = option::some(weapon);
-}
+// TODO: add a function to buy a weapon from a store
 
-public fun buy_armor(hero: &mut Hero, store: &mut HeroStore<Armor>, coin: Coin<SUI>) {
-    let armor = store.buy_item<Armor>(coin);
-    hero.armor = option::some(armor);
-}
+// TODO: add a function to buy a armor from a store
 
 // Test Only
 

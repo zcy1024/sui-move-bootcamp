@@ -12,7 +12,7 @@ const EInsufficientFunds: u64 = 1;
 
 const WEAPON_PRICE: u64 = 1_000_000_000;
 
-public struct HERO_WITNESS has drop {}
+// TODO: Declare the witness struct
 
 public struct Treasury has key {
     id: UID,
@@ -94,11 +94,7 @@ public fun attach_weapon(
     allow_list: &AllowList,
     ctx: &mut TxContext,
 ) {
-    let WeaponTicket { id, hero_id, weapon_name } = weapon_ticket;
-    assert!(hero_id == hero.id.to_inner(), EInvalidWeaponTicket);
-    id.delete();
-    let weapon = weapon::mint_weapon(HERO_WITNESS {}, weapon_name.to_ascii(), allow_list, ctx);
-    dof::add(&mut hero.id, weapon_name, weapon);
+    // TODO: create the logic that allows the hero to attach a weapon that is minted in the external contract
 }
 
 // Test Only

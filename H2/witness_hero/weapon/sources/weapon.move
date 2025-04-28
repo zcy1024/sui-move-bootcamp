@@ -31,23 +31,7 @@ fun init(otw: WEAPON, ctx: &mut TxContext) {
     transfer::share_object(allow_list);
 }
 
-public fun mint_weapon<W: drop>(
-    _: W,
-    name: String,
-    allow_list: &AllowList,
-    ctx: &mut TxContext,
-): Weapon {
-    let caller_witness = type_name::get_with_original_ids<W>().into_string();
-    assert!(
-        allow_list.witness_types.contains(caller_witness) && *allow_list.witness_types.borrow(caller_witness),
-        EInvalidCaller,
-    );
-
-    Weapon {
-        id: object::new(ctx),
-        name,
-    }
-}
+// TODO: add a function to mint a weapon which is only accessible to the whitelisted contracts
 
 public fun name(weapon: &Weapon): String {
     weapon.name
