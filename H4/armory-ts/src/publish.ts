@@ -1,4 +1,4 @@
-import { SuiClient, SuiObjectChangePublished, SuiTransactionBlockResponse, getFullnodeUrl } from '@mysten/sui/client';
+import { SuiClient, SuiObjectChangeCreated, SuiObjectChangePublished, SuiTransactionBlockResponse, getFullnodeUrl } from '@mysten/sui/client';
 import { Keypair } from '@mysten/sui/cryptography';
 import { ADMIN_KEYPAIR } from './consts';
 import { Transaction } from '@mysten/sui/transactions';
@@ -56,7 +56,7 @@ export class PublishSingleton {
     }
     
     public static armoryId(): string {
-        return this.getInstance().armoryResp.effects!.created!.at(0)!.reference.objectId;
+        return findObjectChangeCreatedByType(this.getInstance().armoryResp, `${PublishSingleton.packageId()}::armory::Armory`)!.objectId;
     }
 }
 
@@ -97,10 +97,8 @@ async function createArmory(client: SuiClient, signer: Keypair, packageId: strin
     let armory = txb.moveCall({
         target: `${packageId}::armory::new_armory`,
     });
-    txb.moveCall({
-        target: `${packageId}::armory::share`,
-        arguments: [armory],
-    });
+    txb.transferObjects([armory], signer.toSuiAddress());
+
     const resp = await client.signAndExecuteTransaction({
         transaction: txb,
         signer,
@@ -123,3 +121,9 @@ function findPublishedPackage(resp: SuiTransactionBlockResponse): SuiObjectChang
     );
 }
 
+function findObjectChangeCreatedByType(resp: SuiTransactionBlockResponse, type: string): SuiObjectChangeCreated | undefined {
+    return resp.objectChanges?.find(
+        (chng): chng is SuiObjectChangeCreated =>
+            chng.type === 'created' && chng.objectType === type
+    );
+}
