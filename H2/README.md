@@ -1,5 +1,7 @@
 # Sui & Move Bootcamp - H2: Advanced Move Patterns
 
+##### What you will learn in this module:
+
 This section demonstrates three fundamental Move patterns that are essential for building secure and flexible smart contracts on Sui.
 
 ## 1. Capability Pattern with Properties
@@ -35,3 +37,11 @@ The hot potato pattern showcases dynamic flow control:
 
 This pattern is essential for implementing complex transaction flows where objects must be passed through multiple functions and eventually consumed.
 
+---
+### Useful Links
+
+[Links will be provided by the user]
+
+ - [Pattern: Capability](https://move-book.com/programmability/capability.html)
+ - [Pattern: Witness](https://move-book.com/programmability/witness-pattern.html)
+ - [Pattern: Hot Potato](https://move-book.com/programmability/hot-potato-pattern.html)

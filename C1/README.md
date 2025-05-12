@@ -2,12 +2,14 @@
 
 ### Sui Move Modules: Publisher and Capability Patterns
 
+##### What you will learn in this module:
+
 #### Publisher Module
 The publisher module demonstrates access control using Sui's Publisher object:
 
 - **OTW (One-Time Witness)**: Uses a `HERO` struct with `drop` ability as the one-time witness that uniquely identifies this module at publish time.
 
-- **Publisher object with claim_and_keep on release**: 
+- **Publisher object with claim_and_keep on publish**: 
   ```move
   fun init(otw: HERO, ctx: &mut TxContext) {
       package::claim_and_keep(otw, ctx);
@@ -65,3 +67,8 @@ The capability module demonstrates access control using a capability pattern:
 - The Publisher pattern ensures a **singleton** authority tied to the module publisher.
 - The Capability pattern allows for **multiple** authorized entities through delegation.
 - Publisher requires verification of module origin, while Capability relies on object ownership.
+
+---
+### Useful Links
+ - [The Publisher Authority](https://move-book.com/programmability/publisher.html)
+ - [Pattern: Capability](https://move-book.com/programmability/capability.html)

@@ -2,6 +2,8 @@
 
 ### Display Standard and SDK Integration
 
+##### What you will learn in this module:
+
 #### Sui Display Standard
 - Display is Sui's standard for defining how objects should be rendered in wallets and explorers
 - It provides a flexible way to attach metadata to on-chain objects
@@ -72,6 +74,11 @@
 #### Best Practices
 - Always version your display changes using `display::update_version()`
 - Use consistent field names across your application
-- Consider caching display data for better performance
 - Validate field values before updating
 - Keep image URLs and other external resources reliable and persistent
+  
+---
+### Useful Links
+
+ - [Sui Object Display - Sui Docs](https://docs.sui.io/standards/display)
+ - [Object Display - The Move Book](https://move-book.com/programmability/display.html) 
