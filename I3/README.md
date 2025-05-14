@@ -1,5 +1,14 @@
 # [I3]: King Credits
 
+## What You Will Learn
+
+In this section, you will learn how to implement a governance-controlled token in Move, where transfers require approval using custom logic. You will:
+
+- Initialize a Token with its corresponding Policy.
+- Set a custom rule for transferring Tokens of this type.
+
+By the end, you will understand how to design tokens with advanced, policy-driven transfer restrictions in Move.
+
 In this section we will work with the implementation of King Credits, a token that can only be transferred with approval from the Crown Council.
 
 ## Project Structure
@@ -34,3 +43,9 @@ In `crown_council_rule.move`, implement:
 In `crown_council_rule.move`, implement the `prove` function to:
 - Check if the action request sender is a council member
 - Add approval for the rule if they are a member
+
+## Useful Links
+
+- [Closed Loop Token](https://docs.sui.io/standards/closed-loop-token)
+- [In-Game Currency](https://docs.sui.io/guides/developer/coin/in-game-token)
+- [Loyalty Token](https://docs.sui.io/guides/developer/coin/loyalty)

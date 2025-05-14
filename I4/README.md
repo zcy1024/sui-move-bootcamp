@@ -1,5 +1,16 @@
 # [I4]: Sword trading
 
+## What You Will Learn
+
+In this section, you will learn how to implement a marketplace for NFTs using the Kiosk standard in Move. You will:
+
+- Create a collection compatible with Kiosk trading
+- Implement listing and sale logic using Kiosk primitives
+- Handle secure transfers and purchases of NFTs between users
+- Understand the structure and flow of a decentralized marketplace on Sui
+
+By the end, you will be able to build and test a basic NFT marketplace with trading logic in Move.
+
 In this section we will work with the implementation of a marketplace for trading Swords using Kiosk.
 
 ## Sword Contract
@@ -38,3 +49,7 @@ In `src/kiosk.ts`, implement the `placeAndListInKiosk` function to:
 In `src/kiosk.ts`, complete the `purchase` function to:
 - Buy a sword from a kiosk
 - Transfer it to the buyer's address
+
+## Useful Links
+
+- [Sui Kiosk](https://docs.sui.io/standards/kiosk)

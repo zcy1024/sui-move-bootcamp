@@ -1,5 +1,15 @@
 # [I5]: Kiosk Rules
 
+## What You Will Learn
+
+In this section, you will learn how to implement and enforce advanced Kiosk rules for NFT trading in Move. You will:
+
+- Set up transfer policies that enforce royalties, personal kiosk usage, and locking rules
+- Implement logic for personal kiosks and secure item placement
+- Handle purchases that respect royalty and locking requirements
+
+By the end, you will be able to design and test NFT marketplaces with robust rule enforcement and royalty mechanisms in Move.
+
 In this section we will work with the use of common Kiosk rules that are used to force royalties
 when trading Swords.
 
@@ -41,3 +51,7 @@ In `src/kiosk.ts`, complete the `purchase` function to handle sword purchases by
 - Putting the sword in the buyer's PersonalKiosk (personal_kiosk_rule)
 - Locking the sword in the kiosk (kiosk_lock_rule)
 - Paying royalties (royalty_rule)
+
+## Useful Links
+
+- [Sui Kiosk](https://docs.sui.io/standards/kiosk)

@@ -1,5 +1,14 @@
 # [I1]: Silver Coin
 
+## What You Will Learn
+
+In this section, you will learn the basics of creating a simple fungible token in Sui Move. You will:
+
+- Define a new fungible token with custom metadata
+- Use minting and burning functionality
+
+This exercise provides a foundation for understanding fungible token mechanics in Sui Move.
+
 In this section we will work with the implementation of a Silver coin that can be used as currency in our game.
 
 ## Project Structure
@@ -29,3 +38,8 @@ In `silver.move`, implement the minting functionality in the test to:
 In `silver.move`, implement the burning functionality in the test to:
 - Burn a previously minted coin
 - Verify the total supply is reduced correctly
+
+## Useful Links
+
+- [Coin Standard](https://docs.sui.io/standards/coin)
+- [Create a Coin](https://docs.sui.io/guides/developer/coin)

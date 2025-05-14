@@ -1,6 +1,14 @@
 # [I2]: Fixed Supply
 
-In this section we will work with the implementation of a Silver coin with a fixed supply that cannot be increased.
+## What You Will Learn
+
+In this section, you will learn how to implement a fixed supply fungible token in Move. You will:
+
+- Initialize a coin with a fixed total supply and transfer it to the creator
+- Lock the supply to prevent further minting using dynamic fields and freezing
+- Burn the upgrade cap to make the package immutable and non-upgradable
+
+By the end, you will understand how to enforce strict supply and upgrade constraints for tokens in Move.
 
 ## Project Structure
 
@@ -25,3 +33,8 @@ In `silver.move`, implement the `init` function to:
 In `publish.ts`, modify the `publishPackage` function to:
 - Burn the upgrade cap instead of transferring it
 - This ensures the package cannot be upgraded in the future
+
+## Useful Links
+
+- [Coin Standard](https://docs.sui.io/standards/coin)
+- [Create a Coin](https://docs.sui.io/guides/developer/coin)
