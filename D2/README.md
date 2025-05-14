@@ -12,7 +12,7 @@ public struct Hero has key, store {
 }
 ```
 
-### Useful links
+### Useful Links
 
 - [Sui And Community SDKs](https://docs.sui.io/references/sui-sdks)
 - [Sui Typescript SDK](https://sdk.mystenlabs.com/typescript)

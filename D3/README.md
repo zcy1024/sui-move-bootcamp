@@ -4,13 +4,13 @@ This exercise contains a simple Node project using Typescript, that gets all of 
 
 We are going to be reading the Heroes owned by the address `0x65391674eb4210940ea98ae451237d9335920297e7c8abaeb7e05b221ee36917` on testnet.
 
-### Useful links
+### Useful Links
 
 - [Sui Typescript SDK](https://sdk.mystenlabs.com/typescript)
 
 ### Quickstart
 
-- Create a .env file in the `get-heroes/` directory, following the structure of the [.env.example](./get-heroes/.env.example):
+- Create a .env file in the [get-heroes/](./get-heroes/) directory, following the structure of the [.env.example](./get-heroes/.env.example):
 
 ```
 SUI_NETWORK=https://rpc.testnet.sui.io:443
