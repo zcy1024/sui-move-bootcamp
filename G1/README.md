@@ -1,5 +1,16 @@
 # [G1]: Scenario Testing
 
+## What You Will Learn: Using `test_scenario`
+
+In this section, you will learn how to use the `test_scenario` module to write advanced scenario-based tests for Move smart contracts. The `test_scenario` module allows you to emulate multiple transaction executions and manage a global object pool, closely mirroring real-world blockchain behavior. By leveraging this module, you can:
+
+- Simulate sequences of transactions involving different senders and accounts.
+- Track and manipulate objects (such as NFTs or resources) across multiple transactions.
+- Test contract logic that depends on global state changes, transfers, and object ownership.
+- Validate the effects of each transaction, including created, modified, and transferred objects.
+
+This approach enables you to write comprehensive tests that go beyond single-transaction unit tests, helping you ensure your Move modules behave correctly in complex, multi-step scenarios.
+
 In this section we will work with the implementation of scenario tests for our game's core components: Heroes, XP Tomes, and Access Control.
 
 ## Project Overview
@@ -84,3 +95,7 @@ In `xp_tome_tests.move`, implement the following test case:
 ### 4. ACL Tests
 In `acl_tests.move`, implement the following test case:
 - `test_add_admin` - Verify that new admins can be added and authorized correctly
+
+## Useful Links
+
+- [Sui-specific testing](https://docs.sui.io/guides/developer/first-app/build-test#sui-specific-testing)
