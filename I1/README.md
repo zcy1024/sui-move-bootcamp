@@ -20,6 +20,7 @@ The codebase consists of several key components:
 
 ## Tasks to Complete
 
+![Create Currency](./create-currency.png)
 There are three main tasks to implement in this project:
 
 ### 1. Create Silver Currency
