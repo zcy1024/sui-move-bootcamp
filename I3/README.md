@@ -21,6 +21,7 @@ The codebase consists of several key components:
 
 ## Tasks to Complete
 
+![Sui Token](./token-policy.png)
 There are four main tasks to implement in this project:
 
 ### 1. Initialize Token and Policy
