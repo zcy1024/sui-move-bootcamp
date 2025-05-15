@@ -32,6 +32,7 @@ The codebase consists of several key components:
 
 ## Tasks to Complete
 
+![Kiosk](kiosk.png)
 There are four main tasks to implement in this project:
 
 ### 1. Create Transfer Policy
