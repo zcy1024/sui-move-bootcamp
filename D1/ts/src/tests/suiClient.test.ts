@@ -149,9 +149,11 @@ xtest("Simple GraphQL CLient - Testnet", async () => {
 
   // store the JSON representation for the SUI the address owns before using faucet
   // @ts-ignore
-  const suiBefore = (await suiClient.query({
-    query: balanceQuery,
-  })).data?.address.balance.totalBalance;
+  const suiBefore = (
+    await suiClient.query({
+      query: balanceQuery,
+    })
+  ).data?.address.balance.totalBalance;
 
   let faucetResponse = await requestSuiFromFaucetV2({
     // use getFaucetHost to make sure you're using correct faucet address
@@ -164,40 +166,51 @@ xtest("Simple GraphQL CLient - Testnet", async () => {
 
   // store the JSON representation for the SUI the address owns after using faucet
   // @ts-ignore
-  const suiAfter = (await suiClient.query({
-    query: balanceQuery,
-  })).data?.address.balance.totalBalance;
+  const suiAfter = (
+    await suiClient.query({
+      query: balanceQuery,
+    })
+  ).data?.address.balance.totalBalance;
 
   // @ts-ignore
   expect(balance(suiAfter)).toBe(balance(suiBefore) + 1000);
 });
 
-test("Simple JSON RPC CLient Limits - Mainnet", async () => {
+test("Simple JSON RPC CLient Limits - Testnet", async () => {
   const MY_ADDRESS =
-    "0xf38a463604d2db4582033a09db6f8d4b846b113b3cd0a7c4f0d4690b3fe6aa37";
+    "0xf38a463604d2db4582033a09db6f8d4b846b113b3cd0a7c4f0d4690b3fe6a";
 
   // create a new SuiClient object pointing to the network you want to use
   // const suiClient = new SuiClient({ url: getFullnodeUrl("mainnet") });
   const suiClient = new SuiClient({
     transport: new SuiHTTPTransport({
-      url: "https://fullnode.mainnet.sui.io:443",
+      url: "https://fullnode.testnet.sui.io:443",
     }),
   });
 
   let error = undefined;
 
   try {
-    for (let i = 0; i < 200; i++) {
-      // store the JSON representation for the SUI the address owns before using faucet
-      const suiBefore = await suiClient.getBalance({
-      owner: MY_ADDRESS,
+    // Create an array of promises for parallel execution
+    const promises = Array.from({ length: 800 }, (_, i) => {
+      const address = MY_ADDRESS.concat((i + 100).toString());
+      return suiClient.getOwnedObjects({
+        owner: address,
+      });
     });
 
-      console.log(suiBefore);
-    }
+    // Execute all promises in parallel
+    const results = await Promise.all(promises);
+
+    // Process results if needed
+    results.forEach((objects, index) => {
+      console.log(`Address ${index + 100}:`, objects);
+    });
   } catch (e) {
     error = e;
   }
+
+  console.log(error);
 
   expect(error).toBeDefined();
 });
