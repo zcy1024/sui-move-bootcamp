@@ -36,13 +36,7 @@ public struct HeroRegistry has key {
 /// Init function.
 
 /// Creates a new HeroRegistry and shares it.
-fun init(ctx: &mut TxContext) {
-    transfer::share_object(HeroRegistry {
-        id: object::new(ctx),
-        ids: vector::empty(),
-        counter: 0,
-    });
-}
+fun init(ctx: &mut TxContext) {}
 
 /// Public functions.
 
@@ -54,41 +48,22 @@ public fun new_hero(
     stamina: u64,
     registry: &mut HeroRegistry,
     ctx: &mut TxContext,
-): Hero {
-    let hero = Hero {
-        id: object::new(ctx),
-        name: name,
-        stamina: stamina,
-        weapon: option::none(),
-    };
-    registry.ids.push_back(object::id(&hero));
-    registry.counter = registry.counter + 1;
-    hero
-}
+) {}
 
 /// Receives a name and attack, creates a new Weapon, and returns it.
-public fun new_weapon(name: String, attack: u64, ctx: &mut TxContext): Weapon {
-    Weapon {
-        id: object::new(ctx),
-        name,
-        attack,
-    }
-}
+public fun new_weapon(name: String, attack: u64, ctx: &mut TxContext) {}
 
 /// Receives a Hero and a Weapon, and equips the Weapon to the Hero.
 /// If the Hero already has a Weapon, it should abort with EAlreadyEquipedWeapon.
 /// In the scaffold we delete the weapon so that we don't get a build error.
 public fun equip_weapon(hero: &mut Hero, weapon: Weapon) {
-    assert!(option::is_none(&hero.weapon), EAlreadyEquipedWeapon);
-    hero.weapon.fill(weapon);
+    let Weapon { id, name: _, attack: _ } = weapon;
+    object::delete(id);
 }
 
 /// Receives a Hero, unequips the Weapon from the Hero, and returns the Weapon.
 /// If the Hero does not have a Weapon, it should abort with ENotEquipedWeapon.
-public fun unequip_weapon(hero: &mut Hero): Weapon {
-    assert!(option::is_some(&hero.weapon), ENotEquipedWeapon);
-    hero.weapon.extract()
-}
+public fun unequip_weapon(hero: &mut Hero) {}
 
 /// Accessors.
 
