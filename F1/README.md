@@ -16,20 +16,21 @@ We will initially build a simple version of the dApp, and we are going to keep b
 The application will allow creating and viewing two types of NFTs: Heros and Weapons.
 
 Requirements:
+As a user, I can:
 
-- As a user, I can connect my Slush wallet to the application
-- As a user I can create a Hero and equip them with a Weapon
-- As a User, I can see the latest minted Heroes
-- Each created hero is added in a central, shared Hero Registry (Shared Object)
+- Connect my Slush wallet to the application
+- Create a Hero and equip them with a Weapon
+- See a list with Heroes I own
+- See the latest minted Heroes (not only the ones I own)
 
 ## Implementation Tasks
 
 ### 1. Smart Contracts and Move Tests
 
-- The contracts already contain the basic scaffold in the [move](./move/hero/) directory. The structs are already built for you, but the Move functions lack implementation.
+- The contracts already contain the basic scaffold in the [move](./move/) directory. The structs are already built for you in the [hero.move](./move/hero/sources/hero.move) file, but the Move functions lack implementation.
 - The Move tests are already implemented in the [hero_tests.move](./move/hero/tests/hero_tests.move) file.
 - For this part of the exercise, we have to add the implementation of the functions of the [hero.move](./move/hero/sources/hero.move) module, so that the tests pass.
-
+- After completing that part, you can 
 Please read the corresponding [README.md](./move/README.MD) for the detailed instructions.
 
 ### 2. Typescript Integration Scripts / Tests

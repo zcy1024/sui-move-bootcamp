@@ -33,12 +33,6 @@ fun test_init() {
 //     let mut scenario = test_scenario::begin(sender);
 //     hero::init_for_testing(scenario.ctx());
 
-//     // Test that the registry is empty.
-//     scenario.next_tx(sender);
-//     let registry = scenario.take_shared<HeroRegistry>();
-//     test_utils::assert_eq(hero::hero_registry_counter(&registry), 0);
-//     test_scenario::return_shared(registry);
-
 //     // Mint a new hero and check its fields.
 //     scenario.next_tx(sender);
 //     let mut registry = scenario.take_shared<HeroRegistry>();
@@ -212,4 +206,3 @@ fun test_init() {
 //     test_utils::destroy(hero);
 //     scenario.end();
 // }
-

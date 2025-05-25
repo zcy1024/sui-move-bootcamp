@@ -26,7 +26,7 @@ public struct Weapon has key, store {
 }
 
 /// A shared object that acts as a registry for all the minted Hero objects.
-/// Keeps a set with their Object ids, and a counter with the total number of minted Hero objects for convenience.
+/// Keeps a list with their Object ids, and a counter with the total number of minted Hero objects for convenience.
 /// We can use a vector initially, but we should switch to a bag when making the app production-ready.
 public struct HeroRegistry has key {
     id: UID,
@@ -42,7 +42,12 @@ fun init(ctx: &mut TxContext) {}
 /// Public functions.
 
 /// Receives a name and stamina, creates a new Hero without a Weapon, and returns it.
-public fun new_hero(name: String, stamina: u64, registry: &mut HeroRegistry, ctx: &mut TxContext) {}
+public fun new_hero(
+    name: String,
+    stamina: u64,
+    registry: &mut HeroRegistry,
+    ctx: &mut TxContext,
+) {}
 
 /// Receives a name and attack, creates a new Weapon, and returns it.
 public fun new_weapon(name: String, attack: u64, ctx: &mut TxContext) {}
