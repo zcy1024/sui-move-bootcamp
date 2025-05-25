@@ -14,13 +14,8 @@ interface Response {
  * Extracts the IDs of the created Heroes and Weapons NFTs, filtering by objectType.
  */
 export const parseCreatedObjectsIds = ({ objectChanges }: Args): Response => {
-  const createdObjects = objectChanges.filter(
-    ({ type }) => type === "created"
-  ) as SuiObjectChangeCreated[];
-  const createdHeroes = createdObjects.filter(
-    ({ objectType }) => objectType === `${ENV.PACKAGE_ID}::hero::Hero`
-  );
+  // TODO: Implement the function
   return {
-    heroesIds: createdHeroes.map(({ objectId }) => objectId),
+    heroesIds: [],
   };
 };
