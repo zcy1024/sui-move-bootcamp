@@ -3,9 +3,9 @@ import { SuiTransactionBlockResponse } from "@mysten/sui/client";
 /**
  * Builds, signs, and executes a transaction for:
  * * minting a Hero NFT
- * * minting a Sword NFT
- * * attaching the Sword to the Hero
- * * transferring the Hero to the signer
+ * * minting a Weapon NFT
+ * * attaching the Weapon to the Hero
+ * * transferring the Hero to the signer's address
  */
 export const mintHeroWithWeapon =
   async (): Promise<SuiTransactionBlockResponse> => {

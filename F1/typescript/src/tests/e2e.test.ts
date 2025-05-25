@@ -42,8 +42,4 @@ describe("Mint a Hero NFT, a Weapon NFT and equip it", () => {
     expect(ids).toContain(heroId);
     expect(counter).toBeGreaterThan(0);
   });
-
-  test("Heroes data", async () => {
-    
-  });
 });
