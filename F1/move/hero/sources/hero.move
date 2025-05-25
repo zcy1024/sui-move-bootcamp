@@ -1,7 +1,6 @@
 /// Module: hero
 module hero::hero;
 
-use std::option::none;
 use std::string::String;
 
 /// Constants.
@@ -37,32 +36,59 @@ public struct HeroRegistry has key {
 /// Init function.
 
 /// Creates a new HeroRegistry and shares it.
-fun init(ctx: &mut TxContext) {}
+fun init(ctx: &mut TxContext) {
+    transfer::share_object(HeroRegistry {
+        id: object::new(ctx),
+        ids: vector::empty(),
+        counter: 0,
+    });
+}
 
 /// Public functions.
 
 /// Receives a name and stamina, creates a new Hero without a Weapon, and returns it.
+/// Adds the id of the Hero to the HeroesRegistry object.
+/// Increments the counter of the HeroesRegistry object by 1.
 public fun new_hero(
     name: String,
     stamina: u64,
     registry: &mut HeroRegistry,
     ctx: &mut TxContext,
-) {}
+): Hero {
+    let hero = Hero {
+        id: object::new(ctx),
+        name: name,
+        stamina: stamina,
+        weapon: option::none(),
+    };
+    registry.ids.push_back(object::id(&hero));
+    registry.counter = registry.counter + 1;
+    hero
+}
 
 /// Receives a name and attack, creates a new Weapon, and returns it.
-public fun new_weapon(name: String, attack: u64, ctx: &mut TxContext) {}
+public fun new_weapon(name: String, attack: u64, ctx: &mut TxContext): Weapon {
+    Weapon {
+        id: object::new(ctx),
+        name,
+        attack,
+    }
+}
 
 /// Receives a Hero and a Weapon, and equips the Weapon to the Hero.
 /// If the Hero already has a Weapon, it should abort with EAlreadyEquipedWeapon.
-// In the scaffold we delete the weapon so that we don't get a build error.
+/// In the scaffold we delete the weapon so that we don't get a build error.
 public fun equip_weapon(hero: &mut Hero, weapon: Weapon) {
-    let Weapon { id, name: _, attack: _ } = weapon;
-    object::delete(id);
+    assert!(option::is_none(&hero.weapon), EAlreadyEquipedWeapon);
+    hero.weapon.fill(weapon);
 }
 
 /// Receives a Hero, unequips the Weapon from the Hero, and returns the Weapon.
 /// If the Hero does not have a Weapon, it should abort with ENotEquipedWeapon.
-public fun unequip_weapon(hero: &mut Hero, ctx: &mut TxContext) {}
+public fun unequip_weapon(hero: &mut Hero): Weapon {
+    assert!(option::is_some(&hero.weapon), ENotEquipedWeapon);
+    hero.weapon.extract()
+}
 
 /// Accessors.
 
@@ -94,6 +120,10 @@ public fun weapon_attack(weapon: &Weapon): u64 {
 /// Receives a HeroRegistry and returns the number of Hero objects minted.
 public fun hero_registry_counter(registry: &HeroRegistry): u64 {
     registry.counter
+}
+
+public fun hero_registry_ids(registry: &HeroRegistry): vector<ID> {
+    registry.ids
 }
 
 /// Test functions
