@@ -1,4 +1,9 @@
 import { SuiTransactionBlockResponse } from "@mysten/sui/client";
+import { Transaction } from "@mysten/sui/transactions";
+import { ENV } from "../env";
+import { getAddress } from "./getAddress";
+import { suiClient } from "../suiClient";
+import { getSigner } from "./getSigner";
 
 /**
  * Builds, signs, and executes a transaction for:
@@ -9,6 +14,6 @@ import { SuiTransactionBlockResponse } from "@mysten/sui/client";
  */
 export const mintHeroWithWeapon =
   async (): Promise<SuiTransactionBlockResponse> => {
-    // TODO: Implement this function
-    return null as unknown as SuiTransactionBlockResponse;
+    // TODO: Implement the function
+    return {} as SuiTransactionBlockResponse;
   };

@@ -1,3 +1,7 @@
+import { SuiParsedData } from "@mysten/sui/dist/cjs/client";
+import { ENV } from "../env";
+import { suiClient } from "../suiClient";
+
 interface HeroesRegistry {
   ids: string[];
   counter: number;
