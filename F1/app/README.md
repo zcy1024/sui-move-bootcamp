@@ -13,11 +13,10 @@ In an approach similar to the section E2, we will be using the [@mysten/create-d
 ## Instructions
 
 ### 1. Setup the app
-
-- cd `F1`
 - Run:
 
 ```
+cd F1/app
 npm create @mysten/dapp
 cd <app-name>
 pnpm i
